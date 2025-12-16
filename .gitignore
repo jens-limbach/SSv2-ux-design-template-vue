@@ -1,0 +1,60 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Dependencies
+node_modules
+server/node_modules
+
+# Build outputs
+dist
+dist-ssr
+*.local
+
+# Environment variables (NEVER COMMIT THESE!)
+.env
+.env.local
+.env.development
+.env.production
+.env.test
+server/.env
+server/.env.local
+server/.env.development
+server/.env.production
+server/.env.test
+
+# ALLOW .env.example files for documentation
+!.env.example
+!server/.env.example
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# OS files
+Thumbs.db
+.DS_Store
+
+# Cloud Foundry
+.cfignore
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+*~
+
+# Documentation update (can be removed after review)
+DOCUMENTATION-UPDATE.md

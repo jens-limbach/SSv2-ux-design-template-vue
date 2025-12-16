@@ -1,0 +1,14 @@
+---
+applications:
+  - name: vue-crm-app
+    memory: 256M
+    buildpack: nodejs_buildpack
+    command: npm start
+    env:
+      NODE_ENV: production
+    # IMPORTANT: DO NOT put credentials in this file!
+    # Set environment variables via Cloud Foundry CLI after deployment:
+    # cf set-env vue-crm-app CRM_BASE_URL "https://your-tenant.crm.cloud.sap"
+    # cf set-env vue-crm-app CRM_USERNAME "your-username"
+    # cf set-env vue-crm-app CRM_PASSWORD "your-password"
+    # Then restage: cf restage vue-crm-app

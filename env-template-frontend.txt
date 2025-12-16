@@ -1,0 +1,5 @@
+# Frontend Environment Variables Template
+# Copy to .env file (DO NOT COMMIT .env)
+
+# API Base URL (proxied through Vite dev server in development)
+VITE_API_BASE_URL=/api
