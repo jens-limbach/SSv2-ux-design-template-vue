@@ -22,16 +22,19 @@ This project serves as a **reference implementation** for developers building mo
 
 ## 📋 Table of Contents
 
-1. [Quick Start](#quick-start)
-2. [Features](#features)
-3. [Documentation](#documentation)
-4. [Project Structure](#project-structure)
-5. [Architecture Overview](#architecture-overview)
-6. [Component Catalog](#component-catalog)
-7. [Composables & Patterns](#composables--patterns)
-8. [State Management](#state-management)
-9. [API Integration Guide](#api-integration-guide)
-10. [Design System Usage](#design-system-usage)
+1. [Quick Start](#-quick-start)
+2. [Features](#-features)
+3. [Documentation](#-documentation)
+4. [Project Structure](#-project-structure)
+5. [Component Catalog](#-component-catalog)
+6. [Composables & Patterns](#-composables--patterns)
+7. [State Management](#-state-management)
+8. [How to Add New Data Entities](#-how-to-add-new-data-entities)
+9. [SAP CRM API Integration](#-sap-crm-api-integration)
+10. [Additional Resources](#-additional-resources)
+11. [Security](#-security)
+12. [Tips & Best Practices](#-tips--best-practices)
+13. [TODO / Future Items](#-todo--future-implementation-items)
 
 ---
 
@@ -1052,6 +1055,30 @@ This Vue.js Accounts App demonstrates **production-ready integration** with SAP 
 - Migrating to modern frontend frameworks
 
 **Ready to use with your SAP CRM instance!** 🚀
+
+---
+
+## 📋 TODO / Future Implementation Items
+
+The following features are planned for future releases to enhance functionality and user experience:
+
+### Search & Data Management
+- 🔲 **Global Search Across All Data** - Currently search filters only the visible/loaded data. Implement server-side search that queries all records in the database, not just the current page.
+
+### User Experience Enhancements
+- 🔲 **Loading Indicators per Field** - Add small loading icons next to each field while update operations are running in the background, providing real-time feedback for field-level changes.
+
+### SAP Integration
+- 🔲 **Window Post Message for Standard UIs** - For every standard SAP entity (Accounts, Opportunities, Leads, etc.), implement the `window.postMessage()` API to enable deep linking and navigation to standard SAP UI pages. This allows seamless integration between custom views and native SAP screens.
+
+### Advanced Filtering
+- 🔲 **Standard UI Filter Options** - Implement comprehensive filter panel matching SAP standard UI patterns:
+  - Date range filters (Created Date, Modified Date)
+  - Multi-select filters (Status, Industry, Priority, Country)
+  - Saved filter presets
+  - Advanced filter builder with AND/OR conditions
+  - Filter chips showing active filters
+  - Clear all filters functionality
 
 ---
 
