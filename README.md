@@ -9,7 +9,7 @@ This project serves as a **reference implementation** for developers building mo
 - ✅ **Live SAP CRM API Integration** - Real-time data from Sales & Service Cloud V2
 - ✅ **Secure Authentication** - Express proxy server with Basic Auth (credentials never exposed to client)
 - ✅ **Modern Vue 3** with Composition API and TypeScript
-- ✅ **SAP Fiori Design System** (Sales & Service Cloud V2 variation) - [Complete CSS Style Guide](CSS-STYLE-GUIDE.md) 🎨
+- ✅ **SAP Fiori Design System** (Sales & Service Cloud V2 variation) - [Complete CSS Style Guide](docs/CSS-STYLE-GUIDE.md) 🎨
 - ✅ **Reactive State Management** with Pinia
 - ✅ **Full CRUD Operations** - Create, Read, Update, Delete with optimistic locking (If-Match)
 - ✅ **Server-Side Pagination** - Efficient data loading with OData $top/$skip/$count
@@ -91,7 +91,7 @@ npm start
 
 # Deploy to SAP BTP Cloud Foundry
 cf push
-# See DEPLOYMENT.md for complete instructions
+# See docs/DEPLOYMENT.md for complete instructions
 ```
 
 ---
@@ -141,14 +141,14 @@ cf push
 This project includes comprehensive documentation for all aspects of development and deployment:
 
 ### Getting Started
-- **[QUICKSTART.md](QUICKSTART.md)** - Complete setup guide with troubleshooting
+- **[QUICKSTART.md](docs/QUICKSTART.md)** - Complete setup guide with troubleshooting
   - First-time installation steps
   - Running in development mode
   - Testing the API integration
   - Common issues and solutions
 
 ### Deployment
-- **[DEPLOYMENT.md](DEPLOYMENT.md)** - SAP BTP Cloud Foundry deployment guide
+- **[DEPLOYMENT.md](docs/DEPLOYMENT.md)** - SAP BTP Cloud Foundry deployment guide
   - Prerequisites and CF CLI setup
   - Step-by-step deployment instructions
   - Environment variable configuration
@@ -156,7 +156,7 @@ This project includes comprehensive documentation for all aspects of development
   - Security best practices
 
 ### Technical Documentation
-- **[IMPLEMENTATION-SUMMARY.md](IMPLEMENTATION-SUMMARY.md)** - Complete technical implementation details
+- **[IMPLEMENTATION-SUMMARY.md](docs/IMPLEMENTATION-SUMMARY.md)** - Complete technical implementation details
   - All changes made during development
   - Data model documentation
   - API endpoint mappings
@@ -164,7 +164,7 @@ This project includes comprehensive documentation for all aspects of development
   - Field mapping reference
 
 ### Migration Guide
-- **[README-ENTITY-MIGRATION.md](README-ENTITY-MIGRATION.md)** - Adapt this app to other CRM entities
+- **[README-ENTITY-MIGRATION.md](docs/README-ENTITY-MIGRATION.md)** - Adapt this app to other CRM entities
   - Step-by-step migration process
   - TypeScript interface patterns
   - API service templates
@@ -172,7 +172,7 @@ This project includes comprehensive documentation for all aspects of development
   - Best practices and tips
 
 ### Design & Styling
-- **[CSS-STYLE-GUIDE.md](CSS-STYLE-GUIDE.md)** - 🎨 **Complete SAP Fiori CSS Style Guide**
+- **[CSS-STYLE-GUIDE.md](docs/CSS-STYLE-GUIDE.md)** - 🎨 **Complete SAP Fiori CSS Style Guide**
   - Reusable CSS for any framework (Vue, React, Angular, pure HTML)
   - Color system with CSS custom properties
   - All UI components (tables, buttons, inputs, forms)
@@ -182,7 +182,7 @@ This project includes comprehensive documentation for all aspects of development
   - **Perfect for building consistent SAP-styled interfaces**
 
 ### Additional Resources
-- **[prompt-example.md](prompt-example.md)** - Example prompts for generating similar applications
+- **[prompt-example.md](docs/prompt-example.md)** - Example prompts for generating similar applications
 - **[env-template.txt](server/env-template.txt)** - Server environment variable template
 - **[env-template-frontend.txt](env-template-frontend.txt)** - Frontend environment variable template
 
@@ -242,11 +242,14 @@ V2Frontend2/
 ├── vite.config.ts                   # Vite configuration (includes proxy)
 ├── tsconfig.json                    # TypeScript configuration
 ├── package.json                     # Root dependencies and scripts
-├── QUICKSTART.md                    # Quick start guide
-├── DEPLOYMENT.md                    # Cloud Foundry deployment guide
-├── README-ENTITY-MIGRATION.md       # Entity migration guide
-├── IMPLEMENTATION-SUMMARY.md        # Technical implementation details
-└── prompt-example.md                # Example prompts for generation
+├── docs/                            # Documentation
+│   ├── QUICKSTART.md               # Quick start guide
+│   ├── DEPLOYMENT.md               # Cloud Foundry deployment guide
+│   ├── README-ENTITY-MIGRATION.md  # Entity migration guide
+│   ├── IMPLEMENTATION-SUMMARY.md   # Technical implementation details
+│   ├── CSS-STYLE-GUIDE.md         # SAP Fiori CSS style guide
+│   └── prompt-example.md          # Example prompts for generation
+└── README.md                        # This file
 
 ```
 ┌────────────────────────────────────────────────────────────┐
@@ -961,11 +964,11 @@ fetchAccounts({
 
 All documentation is comprehensive and up-to-date with the current implementation:
 
-- **[QUICKSTART.md](QUICKSTART.md)** - Complete setup guide with feature testing checklist and troubleshooting
-- **[DEPLOYMENT.md](DEPLOYMENT.md)** - SAP BTP Cloud Foundry deployment with environment variables and scaling
-- **[IMPLEMENTATION-SUMMARY.md](IMPLEMENTATION-SUMMARY.md)** - Technical documentation with all changes, architecture diagrams, and statistics
-- **[README-ENTITY-MIGRATION.md](README-ENTITY-MIGRATION.md)** - Step-by-step guide to adapt this app for other entities (Opportunities, Leads, Tickets, etc.)
-- **[prompt-example.md](prompt-example.md)** - Example prompts for AI-assisted development and generation
+- **[QUICKSTART.md](docs/QUICKSTART.md)** - Complete setup guide with feature testing checklist and troubleshooting
+- **[DEPLOYMENT.md](docs/DEPLOYMENT.md)** - SAP BTP Cloud Foundry deployment with environment variables and scaling
+- **[IMPLEMENTATION-SUMMARY.md](docs/IMPLEMENTATION-SUMMARY.md)** - Technical documentation with all changes, architecture diagrams, and statistics
+- **[README-ENTITY-MIGRATION.md](docs/README-ENTITY-MIGRATION.md)** - Step-by-step guide to adapt this app for other entities (Opportunities, Leads, Tickets, etc.)
+- **[prompt-example.md](docs/prompt-example.md)** - Example prompts for AI-assisted development and generation
 - **[.github/copilot-instructions.md](.github/copilot-instructions.md)** - GitHub Copilot instructions for generating similar projects
 
 **Configuration Templates:**
@@ -1001,10 +1004,10 @@ This Vue.js Accounts App demonstrates **production-ready integration** with SAP 
 
 ## 🆘 Getting Help
 
-1. See [QUICKSTART.md](QUICKSTART.md) for setup and troubleshooting
-2. Check [DEPLOYMENT.md](DEPLOYMENT.md) for Cloud Foundry deployment
-3. Review [README-ENTITY-MIGRATION.md](README-ENTITY-MIGRATION.md) for adapting to other entities
-4. Review [IMPLEMENTATION-SUMMARY.md](IMPLEMENTATION-SUMMARY.md) for technical details
+1. See [QUICKSTART.md](docs/QUICKSTART.md) for setup and troubleshooting
+2. Check [DEPLOYMENT.md](docs/DEPLOYMENT.md) for Cloud Foundry deployment
+3. Review [README-ENTITY-MIGRATION.md](docs/README-ENTITY-MIGRATION.md) for adapting to other entities
+4. Review [IMPLEMENTATION-SUMMARY.md](docs/IMPLEMENTATION-SUMMARY.md) for technical details
 5. Consult SAP CRM API documentation at `/sap/c4c/api/v1/repository-service/openApiSchemas/...`
 
 ## 🤝 Contributing
