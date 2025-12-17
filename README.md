@@ -35,7 +35,7 @@ The main accounts page displays a sortable, searchable table with:
 - Key performance metrics and statistics
 - Real-time data visualization
 
-### Accounts Overview with Table View
+### Modal Dialogue for Entitity Creation
 ![Modal for Create](docs/images/Screenshot2.png)
 
 ---
