@@ -18,7 +18,7 @@ This project serves as a **reference implementation** for developers building mo
 - ✅ **Accessibility** - WCAG 2.1 AA compliant
 - ✅ **Entity Migration Guide** - Easy adaptation to other entities (Opportunities, Leads, etc.)
 
-## 📸 Screenshot
+## 📸 Screenshots
 
 ### Accounts Overview with Table View
 ![Accounts Table View](docs/images/Screenshot1.png)
