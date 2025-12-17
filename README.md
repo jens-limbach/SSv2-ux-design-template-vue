@@ -18,6 +18,26 @@ This project serves as a **reference implementation** for developers building mo
 - ✅ **Accessibility** - WCAG 2.1 AA compliant
 - ✅ **Entity Migration Guide** - Easy adaptation to other entities (Opportunities, Leads, etc.)
 
+## 📸 Screenshot
+
+### Accounts Overview with Table View
+![Accounts Table View](docs/images/Screenshot1.png)
+
+The main accounts page displays a sortable, searchable table with:
+- Server-side pagination with configurable page sizes
+- Multi-column sorting with visual indicators
+- Real-time search across all account fields
+- Color-coded priority badges (High/Medium/Low)
+- Row state indicators (Active/Inactive/Review)
+- Inline edit and delete actions
+- Accounts by Industry (pie chart)
+- Accounts by Priority (column chart)
+- Key performance metrics and statistics
+- Real-time data visualization
+
+### Accounts Overview with Table View
+![Modal for Create](docs/images/Screenshot2.png)
+
 ---
 
 ## 📋 Table of Contents
