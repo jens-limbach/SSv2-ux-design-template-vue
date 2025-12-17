@@ -1295,5 +1295,421 @@ export const updateAccount = async (
 - Run `cd server && npm install`
 - Or use `npm run postinstall` script
 
+## Entity Migration & Multi-Entity Architecture
+
+This application is designed to work with any SAP Sales and Service Cloud V2 entity. A comprehensive entity migration guide is available in [README-ENTITY-MIGRATION.md](../README-ENTITY-MIGRATION.md). When working with new entities or planning entity implementations, follow these principles:
+
+### Entity Migration Overview
+
+**Core Principle**: The application follows a modular, pattern-based architecture that makes adding new entities straightforward. Each entity requires 5 components:
+
+1. **TypeScript Interface** (`src/types/index.ts`)
+2. **API Service with Mappers** (`src/services/{entity}Api.ts`)
+3. **Pinia Store** (`src/stores/use{Entity}Store.ts`)
+4. **UI Components** (Modal, Page)
+5. **Express Proxy Endpoints** (`server/index.js`)
+
+### API Discovery Pattern
+
+**IMPORTANT**: When discovering new entity endpoints, always use the two-step OpenAPI schema discovery process:
+
+**Step 1: List Available Schemas**
+```
+GET /sap/c4c/api/v1/repository-service/openApiSchemas/
+```
+
+**Step 2: Fetch Specific Schema**
+```
+GET /sap/c4c/api/v1/repository-service/openApiSchemas/{serviceName}.openapischema.{entityName}
+```
+
+**Workflow for Entity Discovery**:
+1. Ask user for entity name (e.g., "opportunities", "leads", "tickets")
+2. Call list endpoint to search for matching schemas
+3. If one match: proceed with that schema
+4. If multiple matches: present options to user and ask them to choose
+5. Parse schema to extract field names, types, and required fields
+
+**Important Notes**:
+- Multiple services may have similar entity names (e.g., "account" appears in multiple services)
+- Always verify the correct service name before proceeding
+- Schema provides authoritative field names, types, and constraints
+
+### Mapper Pattern (MANDATORY)
+
+All entity API services MUST follow the four-mapper pattern:
+
+```typescript
+// 1. Core mapper: API → Frontend model
+export function mapEntityFromApi(apiEntity: ApiEntity): Entity {
+  return {
+    entityId: apiEntity.displayId,
+    id: apiEntity.id,
+    name: apiEntity.name,
+    // ... field mappings
+    updatedOn: apiEntity.adminData?.updatedOn
+  }
+}
+
+// 2. Reverse mapper: Frontend → API
+export function mapEntityToApi(entity: Partial<Entity>) {
+  return {
+    name: entity.name,
+    // ... API field structure
+  }
+}
+
+// 3. Single response unwrapper
+export function mapSingleResponse(response: ApiSingleResponse<ApiEntity>): Entity {
+  return mapEntityFromApi(response.value)
+}
+
+// 4. List response unwrapper
+export function mapListResponse(response: ApiListResponse<ApiEntity>): Entity[] {
+  return response.value.map(mapEntityFromApi)
+}
+```
+
+**Why This Pattern**:
+- **Separation of concerns**: API structure vs frontend model
+- **Consistency**: Same pattern across all entities
+- **Maintainability**: API changes only affect mapper functions
+- **Type safety**: TypeScript interfaces ensure correctness
+
+### Field Selection Guidelines
+
+When creating a new entity interface, if requirements aren't specified, select **10-15 most important fields**:
+
+**Must-Have Fields** (always include):
+1. **displayId** (user-facing ID like "ACC-1001") → map to `{entity}Id`
+2. **id** (UUID for API calls) → always include
+3. **name** or primary identifier field
+4. **lifeCycleStatus** or status field → map to `status`
+5. **adminData.updatedOn** (for If-Match header) → map to `updatedOn`
+6. **owner** fields (ownerId, ownerFormattedName)
+
+**Commonly Useful Fields**:
+7. Related parent entity (e.g., accountId for Opportunity)
+8. Priority/importance indicator
+9. Amount/value (if financial entity)
+10. Date fields (due date, close date, created date)
+11. Category/type classification
+12. Description or notes field
+
+### UUID vs Display ID Pattern (CRITICAL)
+
+**Always maintain both identifiers**:
+
+```typescript
+export interface Entity {
+  entityId: string  // Display ID (e.g., "OPP-1001") - shown in UI
+  id: string        // UUID - used for API calls, NEVER shown to user
+  // ... other fields
+}
+```
+
+**Usage**:
+- **UI Display**: Always use `entityId` (user-friendly)
+- **API Calls**: Always use `id` (UUID)
+- **Store lookups**: Accept `entityId`, look up by `entityId`, use `id` for API
+
+### Pinia Store Pattern
+
+All entity stores follow this structure:
+
+```typescript
+export const useEntityStore = defineStore('entity', () => {
+  // State
+  const entities = ref<Entity[]>([])
+  const totalCount = ref(0)  // For pagination
+  const loading = ref(false)
+  const error = ref<string | null>(null)
+  
+  // Dropdown data (if applicable)
+  const dropdownOptions = ref<Option[]>([])
+  const loadingDropdown = ref(false)
+  
+  // Getters
+  const activeEntities = computed(() => 
+    entities.value.filter(e => e.status === 'Active')
+  )
+  
+  // Actions (CRUD + dropdown)
+  async function fetchEntities(page: number = 1, itemsPerPage: number = 30) { }
+  async function fetchDropdownData() { }
+  async function fetchSingleForUpdate(id: string): Promise<Entity> { }
+  async function addEntity(entity: Partial<Entity>) { }
+  async function updateEntity(entityId: string, updates: Partial<Entity>) { }
+  async function deleteEntity(entityId: string) { }
+  async function getEntityById(entityId: string): Entity | undefined { }
+  
+  return { /* state, getters, actions */ }
+})
+```
+
+**Critical updateEntity Pattern**:
+```typescript
+async function updateEntity(entityId: string, updates: Partial<Entity>) {
+  loading.value = true
+  try {
+    const entity = entities.value.find(e => e.entityId === entityId)
+    if (!entity) throw new Error('Entity not found')
+    
+    // ALWAYS fetch fresh entity for If-Match
+    const freshEntity = await fetchSingleForUpdate(entity.id)
+    if (!freshEntity.updatedOn) {
+      throw new Error('No updatedOn timestamp found')
+    }
+    
+    // Use fresh updatedOn as If-Match
+    const updated = await api.updateEntity(entity.id, updates, freshEntity.updatedOn)
+    
+    // Update in local state
+    const index = entities.value.findIndex(e => e.entityId === entityId)
+    if (index !== -1) {
+      entities.value[index] = updated
+    }
+  } catch (e) {
+    error.value = e instanceof Error ? e.message : 'Failed to update'
+    throw e
+  } finally {
+    loading.value = false
+  }
+}
+```
+
+### Express Proxy Endpoint Pattern
+
+For each entity, add these endpoints to `server/index.js`:
+
+```javascript
+// List with OData support
+app.get('/api/{entities}', async (req, res) => {
+  try {
+    const { $top, $skip, $orderby, $filter } = req.query
+    const params = new URLSearchParams()
+    if ($top) params.append('$top', $top)
+    if ($skip) params.append('$skip', $skip)
+    if ($orderby) params.append('$orderby', $orderby)
+    if ($filter) params.append('$filter', $filter)
+    params.append('$count', 'true')  // Always include count
+    
+    const queryString = params.toString() ? `?${params.toString()}` : ''
+    const response = await crmRequest(`/sap/c4c/api/v1/{service}/{entities}${queryString}`)
+    const data = await response.json()
+    res.json(data)
+  } catch (error) {
+    console.error('Error:', error)
+    res.status(500).json({ error: error.message })
+  }
+})
+
+// Get single (for If-Match updates)
+app.get('/api/{entities}/:id', async (req, res) => { /* ... */ })
+
+// Create
+app.post('/api/{entities}', async (req, res) => { /* ... */ })
+
+// Update with If-Match
+app.patch('/api/{entities}/:id', async (req, res) => {
+  try {
+    const ifMatch = req.headers['if-match']
+    if (!ifMatch) {
+      return res.status(400).json({ error: 'If-Match header is required' })
+    }
+    // ... update with If-Match header
+  } catch (error) { /* ... */ }
+})
+
+// Delete
+app.delete('/api/{entities}/:id', async (req, res) => { /* ... */ })
+```
+
+### Dropdown Data Pattern
+
+When entities have dropdown fields (e.g., opportunity stages, priority levels):
+
+1. **Define interface** in `src/types/index.ts`:
+   ```typescript
+   export interface StageOption {
+     id: string
+     description: string
+   }
+   ```
+
+2. **Add API function** in service:
+   ```typescript
+   export async function fetchEntityStages(): Promise<StageOption[]> { }
+   ```
+
+3. **Add store state and action**:
+   ```typescript
+   const stages = ref<StageOption[]>([])
+   async function fetchStages() { }
+   async function fetchDropdownData() {
+     await Promise.all([fetchStages(), fetchOtherDropdowns()])
+   }
+   ```
+
+4. **Add Express endpoint**:
+   ```javascript
+   app.get('/api/{entity}-stages', async (req, res) => { })
+   ```
+
+5. **Fetch on page mount BEFORE main data**:
+   ```typescript
+   onMounted(async () => {
+     await store.fetchDropdownData()  // First
+     await store.fetchEntities()      // Then
+   })
+   ```
+
+### Component Reuse Strategy
+
+**DO Reuse** (generic, configured via props):
+- `SapButton.vue`
+- `SapInput.vue`
+- `SapTable.vue`, `SapTableRow.vue`, `SapTableHeader.vue`
+- `SapPagination.vue`
+- `SapSearchBox.vue`
+- `SapSelect.vue`, `SapSwitch.vue`, `SapRadioGroup.vue`
+
+**DO Duplicate & Customize** (entity-specific):
+- Modal components (`{Entity}Modal.vue`)
+- Page components (`{Entity}Page.vue`)
+- Analytics/dashboard components (if entity-specific metrics)
+
+**Modal Customization Checklist**:
+- Update form fields to match entity interface
+- Update validation rules
+- Connect to correct store (`use{Entity}Store`)
+- Update dropdown options
+- Match field order to table column order
+- Update modal title and button labels
+
+### Planning Multi-Entity Work
+
+When user requests adding a new entity or asks "can we add opportunities/leads/tickets?":
+
+1. **Confirm requirements**:
+   - Which entity? (exact name)
+   - What fields should be displayed? (suggest 10-15 if unclear)
+   - Any specific functionality? (charts, custom actions, etc.)
+
+2. **Propose implementation plan**:
+   - Step 1: Discover API schema via OpenAPI endpoint
+   - Step 2: Create TypeScript interface with 10-15 fields
+   - Step 3: Create API service with mapper pattern
+   - Step 4: Create Pinia store
+   - Step 5: Add Express proxy endpoints
+   - Step 6: Create UI components (modal, page)
+   - Step 7: Test CRUD operations
+
+3. **Estimate effort**: 1-3 hours depending on complexity
+
+4. **Follow patterns consistently**: Use existing Accounts implementation as reference
+
+### Nested Data Handling
+
+SAP APIs often return nested structures. Flatten them in mappers:
+
+```typescript
+// API response:
+{
+  id: "123",
+  defaultAddress: {
+    country: "US",
+    city: "New York"
+  },
+  adminData: {
+    createdOn: "2024-01-01",
+    updatedOn: "2024-12-17"
+  }
+}
+
+// Mapper (flatten):
+export function mapEntityFromApi(apiEntity: ApiEntity): Entity {
+  return {
+    id: apiEntity.id,
+    country: apiEntity.defaultAddress?.country || '',
+    city: apiEntity.defaultAddress?.city || '',
+    updatedOn: apiEntity.adminData?.updatedOn
+  }
+}
+```
+
+### If-Match Optimistic Locking (CRITICAL)
+
+**All updates MUST follow this pattern**:
+
+1. User opens edit modal → display current data
+2. User submits form → store.updateEntity() called
+3. Store fetches fresh entity: `await fetchSingleForUpdate(entity.id)`
+4. Store extracts `updatedOn` timestamp from fresh entity
+5. Store calls API with If-Match: `await api.updateEntity(id, updates, freshEntity.updatedOn)`
+6. API includes If-Match header: `headers: { 'If-Match': ifMatch }`
+7. If 412 Precondition Failed → show error "Entity was modified by another user"
+
+**Why**: Prevents conflicting updates when multiple users edit same entity.
+
+### Testing Checklist for New Entities
+
+After implementing a new entity, verify:
+
+- [ ] **Fetch**: List loads from API with pagination
+- [ ] **Display**: Table shows correct data with proper formatting
+- [ ] **Sort**: Column sorting works
+- [ ] **Search**: Search filters results
+- [ ] **Create**: Modal opens empty, submits successfully
+- [ ] **Edit**: Modal opens with populated data
+- [ ] **Update**: Saves changes via API with If-Match
+- [ ] **Delete**: Removes entity via API
+- [ ] **Dropdowns**: Dropdown data loads correctly
+- [ ] **Errors**: API errors display user-friendly messages
+- [ ] **Loading**: Loading states show during operations
+- [ ] **Pagination**: Page navigation works with totalCount
+
+### Common Entity Types & Specific Patterns
+
+**Financial Entities** (Opportunities, Quotes):
+- Include: amount, currency, probability fields
+- Format currency for display: `${currency} ${amount.toLocaleString()}`
+- Add charts for revenue analysis
+- Consider exchange rates if multi-currency
+
+**Time-Based Entities** (Activities, Tasks):
+- Include: dueDate, startDate, endDate, completedDate
+- Add date pickers with validation
+- Show overdue indicators (red if past due)
+- Consider calendar integration
+
+**Hierarchical Entities** (Accounts with Contacts):
+- Include parent/child relationship fields
+- Add navigation between related entities
+- Show child entity counts
+- Consider lazy loading children
+
+**Document Entities** (Notes, Attachments):
+- Handle file upload/download
+- Show file metadata (size, type, uploaded by, date)
+- Add preview functionality for common types
+- Consider file size limits
+
+### When to Reference the Migration Guide
+
+**Always reference [README-ENTITY-MIGRATION.md](../README-ENTITY-MIGRATION.md) when**:
+- User asks to add a new entity
+- Planning implementation of multiple entities
+- Troubleshooting entity-specific issues
+- User asks "how do I add X entity?"
+- Creating entity migration documentation
+
+**The guide contains**:
+- Detailed step-by-step instructions
+- Full code templates for all components
+- Troubleshooting section
+- Quick reference checklists
+- Entity-specific tips
+
 ## Remember:
-You are building **production-ready, full-stack applications** that are professional, secure, accessible, and maintainable. The frontend should feel cohesive with the SAP Sales and Service Cloud Version 2 design language, while the backend should follow Node.js best practices with secure credential handling. The monorepo architecture should be clean, with clear separation between client and server code, ready for deployment to SAP BTP Cloud Foundry. When in doubt, prioritize security, clarity, and consistency.
+You are building **production-ready, full-stack applications** that are professional, secure, accessible, and maintainable. The frontend should feel cohesive with the SAP Sales and Service Cloud Version 2 design language, while the backend should follow Node.js best practices with secure credential handling. The monorepo architecture should be clean, with clear separation between client and server code, ready for deployment to SAP BTP Cloud Foundry. When working with entities, always follow the documented patterns for consistency, maintainability, and reliability. When in doubt, prioritize security, clarity, and consistency.
