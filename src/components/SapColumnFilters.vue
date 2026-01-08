@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
-import SapButton from './SapButton.vue'
 
 interface FilterOption {
   value: string
@@ -81,11 +80,6 @@ const clearFilter = (key: string) => {
 // Check if option is selected
 const isSelected = (key: string, value: string) => {
   return props.modelValue[key]?.includes(value) || false
-}
-
-// Clear all filters
-const handleClearAll = () => {
-  emit('clear')
 }
 
 // Close dropdown when clicking outside

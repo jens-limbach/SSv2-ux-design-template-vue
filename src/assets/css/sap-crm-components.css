@@ -2429,6 +2429,18 @@
   z-index: 2;
 }
 
+/* Navigation link styles for clickable table cells */
+.sap-crm-table__nav-link {
+  font-weight: 600;
+  color: var(--color-neutral-7);
+  cursor: pointer;
+  transition: text-decoration 0.1s ease;
+}
+
+.sap-crm-table__nav-link:hover {
+  text-decoration: underline;
+}
+
 .sap-crm-table__cell--footer {
   z-index: 2;
 }
@@ -3201,6 +3213,12 @@
 }
 
 .sap-crm-filter-dropdown .sap-crm-btn {
+  color: var(--color-primary-4);
+}
+
+.sap-crm-filter-dropdown .sap-crm-btn:hover,
+.sap-crm-filter-dropdown .sap-crm-btn:active {
+  background-color: var(--color-neutral-1);
   color: var(--color-primary-4);
 }
 

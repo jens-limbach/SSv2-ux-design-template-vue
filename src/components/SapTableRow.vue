@@ -212,6 +212,19 @@ const handleDelete = (event: Event) => {
     emit('delete', props.account.accountId)
   }
 }
+
+// Navigate to CRM entity
+const navigateToCrm = (routingKey: string, objectKey: string) => {
+  const message = {
+    operation: 'navigation',
+    params: {
+      objectKey: objectKey,
+      routingKey: routingKey,
+      viewType: 'quickview'
+    }
+  }
+  window.parent.postMessage(message, '*')
+}
 </script>
 
 <template>
@@ -236,7 +249,13 @@ const handleDelete = (event: Event) => {
           />
         </template>
         <template v-else>
-          <span>{{ account.companyName }}</span>
+          <span 
+            v-if="account.id"
+            class="sap-crm-table__nav-link" 
+            @click.stop="navigateToCrm('mdaccount', account.id)">
+            {{ account.companyName }}
+          </span>
+          <span v-else>{{ account.companyName }}</span>
           <SapButton
             variant="secondary"
             size="md"
@@ -363,7 +382,13 @@ const handleDelete = (event: Event) => {
           />
         </template>
         <template v-else>
-          <span>{{ account.contactPerson }}</span>
+          <span 
+            v-if="account.primaryContactId"
+            class="sap-crm-table__nav-link" 
+            @click.stop="navigateToCrm('mdcontact', account.primaryContactId)">
+            {{ account.contactPerson }}
+          </span>
+          <span v-else>{{ account.contactPerson }}</span>
           <SapButton
             variant="secondary"
             size="md"
@@ -394,7 +419,13 @@ const handleDelete = (event: Event) => {
           />
         </template>
         <template v-else>
-          <span>{{ account.owner }}</span>
+          <span 
+            v-if="account.ownerId"
+            class="sap-crm-table__nav-link" 
+            @click.stop="navigateToCrm('mdemployee', account.ownerId)">
+            {{ account.owner }}
+          </span>
+          <span v-else>{{ account.owner }}</span>
           <SapButton
             variant="secondary"
             size="md"
