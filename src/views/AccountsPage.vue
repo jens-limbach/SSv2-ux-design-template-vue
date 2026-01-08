@@ -89,8 +89,8 @@ const filterOptions = computed(() => {
     }
   })
   
-  // Countries (use value as both code and label)
-  const countries = [...new Set(accountStore.accounts.map(a => a.country).filter(Boolean))].sort()
+  // Countries - use analytics data for complete list (all countries, not just current page)
+  const countries = [...new Set(accountStore.analyticsData.map(a => a.country).filter(c => c && c !== 'Unknown'))].sort()
   
   return [
     {
