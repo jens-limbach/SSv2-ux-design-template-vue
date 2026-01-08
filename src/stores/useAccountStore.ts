@@ -39,8 +39,11 @@ export const useAccountStore = defineStore('account', () => {
 
   /**
    * Fetches all accounts from API with pagination support
+   * @param page - Current page number (1-indexed)
+   * @param itemsPerPage - Number of items per page
+   * @param search - Optional search term for server-side search
    */
-  async function fetchAccounts(page: number = 1, itemsPerPage: number = 30) {
+  async function fetchAccounts(page: number = 1, itemsPerPage: number = 30, search?: string) {
     loading.value = true
     error.value = null
     try {
@@ -48,7 +51,8 @@ export const useAccountStore = defineStore('account', () => {
       const result = await api.fetchAccounts({
         top: itemsPerPage,
         skip: skip,
-        orderby: 'formattedName asc'
+        orderby: 'formattedName asc',
+        search: search
       })
       accounts.value = result.accounts
       totalCount.value = result.count

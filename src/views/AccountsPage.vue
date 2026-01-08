@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
+import { watchDebounced } from '@vueuse/core'
 import { useAccountStore } from '@/stores/useAccountStore'
 import { useTableSort } from '@/composables/useTableSort'
-import { useSearch } from '@/composables/useSearch'
+import { useUrlFilter } from '@/composables/useUrlFilter'
 import { useModal } from '@/composables/useModal'
 import type { Account } from '@/types'
 import SapTable from '@/components/SapTable.vue'
@@ -44,31 +45,22 @@ const parseUrlFilters = () => {
   urlFilters.value = filters
 }
 
-// Search functionality (updated to exclude removed fields)
-const searchKeys: (keyof Account)[] = [
-  'accountId',
-  'companyName',
-  'contactPerson',
-  'owner',
-  'website',
-  'industry',
-  'country',
-  'abcClassificationDescription',
-  'status'
-]
+// Search term for server-side search
+const searchTerm = ref('')
 
-const { searchTerm, filteredItems: searchFilteredItems } = useSearch(
+// Apply URL query parameter filters (client-side)
+const { filteredItems: urlFilteredItems } = useUrlFilter(
   computed(() => accountStore.accounts),
-  searchKeys
+  [] // URL filter keys can be added here in the future
 )
 
-// Apply URL query parameter filters
-const urlFilteredItems = computed(() => {
+// Additional URL filtering logic
+const finalFilteredItems = computed(() => {
   if (Object.keys(urlFilters.value).length === 0) {
-    return searchFilteredItems.value
+    return urlFilteredItems.value
   }
   
-  return searchFilteredItems.value.filter(account => {
+  return urlFilteredItems.value.filter(account => {
     return Object.entries(urlFilters.value).every(([key, value]) => {
       // Find matching property (case-insensitive)
       const accountKey = Object.keys(account).find(
@@ -91,14 +83,14 @@ const urlFilteredItems = computed(() => {
 })
 
 // Sorting functionality
-const { sortedItems, sortBy, sortColumn, sortDirection } = useTableSort(urlFilteredItems)
+const { sortedItems, sortBy, sortColumn, sortDirection } = useTableSort(finalFilteredItems)
 
 // Pagination - calculate based on API totalCount
-const itemsPerPage = 30
+const itemsPerPage = ref(30)
 const currentPage = ref(1)
 
 const totalPages = computed(() => {
-  return Math.ceil(accountStore.totalCount / itemsPerPage)
+  return Math.ceil(accountStore.totalCount / itemsPerPage.value)
 })
 
 const goToPage = (page: number) => {
@@ -107,23 +99,58 @@ const goToPage = (page: number) => {
   }
 }
 
+// Fetch accounts function (with search parameter)
+const fetchAccountsWithSearch = (page: number = 1, perPage: number = 30, search?: string) => {
+  accountStore.fetchAccounts(page, perPage, search)
+  // Scroll to top when data changes
+  window.scrollTo({ top: 0, behavior: 'smooth' })
+}
+
 // Watch currentPage and fetch new data from API
 watch(currentPage, (newPage) => {
-  accountStore.fetchAccounts(newPage, itemsPerPage)
-  // Scroll to top when page changes
-  window.scrollTo({ top: 0, behavior: 'smooth' })
+  const search = searchTerm.value.trim() || undefined
+  fetchAccountsWithSearch(newPage, itemsPerPage.value, search)
 })
+
+// Watch itemsPerPage changes (when user changes page size)
+watch(itemsPerPage, (newPerPage) => {
+  currentPage.value = 1 // Reset to page 1
+  const search = searchTerm.value.trim() || undefined
+  fetchAccountsWithSearch(1, newPerPage, search)
+})
+
+// Watch searchTerm with debounce (300ms delay)
+watchDebounced(
+  searchTerm,
+  (newSearchTerm) => {
+    currentPage.value = 1 // Reset to page 1 on search
+    const search = newSearchTerm.trim() || undefined
+    fetchAccountsWithSearch(1, itemsPerPage.value, search)
+  },
+  { debounce: 300 }
+)
+
+// Handle clear search button
+const handleClearSearch = () => {
+  currentPage.value = 1 // Reset to page 1
+  // searchTerm is already cleared by SapSearchBox
+  // Fetch all accounts
+  fetchAccountsWithSearch(1, itemsPerPage.value, undefined)
+}
 
 // Display items (filtered and sorted, all items from current API fetch)
 const displayItems = computed(() => sortedItems.value)
 
 // Load accounts on mount and parse URL filters
 onMounted(async () => {
+  // Clear search term on mount for fresh start
+  searchTerm.value = ''
+  
   // Fetch dropdown data first (industries, contacts, employees)
   await accountStore.fetchDropdownData()
   
   // Then fetch accounts for table (page 1)
-  await accountStore.fetchAccounts(currentPage.value, itemsPerPage)
+  await accountStore.fetchAccounts(currentPage.value, itemsPerPage.value)
   
   // Start analytics fetch in background (non-blocking, don't await)
   // By the time user clicks analytics button, data will likely be ready
@@ -222,7 +249,7 @@ const handleCloseModal = () => {
     <div class="table-header">
       <h1>Accounts ({{ accountStore.totalCount }})</h1>
       <div class="table-header__actions">
-        <SapSearchBox v-model="searchTerm" />
+        <SapSearchBox v-model="searchTerm" @clear="handleClearSearch" />
         <SapButton
           variant="secondary"
           size="md"

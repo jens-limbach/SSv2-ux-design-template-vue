@@ -3023,28 +3023,15 @@
 
 .search-clear-btn {
   position: absolute;
-  right: 3rem;
+  right: 0.5rem;
   top: 50%;
   transform: translateY(-50%);
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0.25rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--color-primary-5);
-  transition: color 0.2s ease;
   z-index: 1;
-}
-
-.search-clear-btn:hover {
-  color: var(--color-primary-6);
+  opacity: 1;
 }
 
 .search-clear-btn svg {
-  width: 16px;
-  height: 16px;
+  fill: currentColor;
 }
 
 .search-box input:focus {

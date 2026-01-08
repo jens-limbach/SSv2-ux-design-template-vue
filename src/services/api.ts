@@ -219,6 +219,7 @@ export async function fetchAccounts(params?: {
   skip?: number
   orderby?: string
   filter?: string
+  search?: string
 }): Promise<{ accounts: Account[], count: number }> {
   const queryParams = new URLSearchParams()
   
@@ -226,6 +227,11 @@ export async function fetchAccounts(params?: {
   if (params?.skip) queryParams.append('$skip', params.skip.toString())
   if (params?.orderby) queryParams.append('$orderby', params.orderby)
   if (params?.filter) queryParams.append('$filter', params.filter)
+  if (params?.search) {
+    // Escape double quotes in search term to prevent syntax errors
+    const escapedSearch = params.search.replace(/"/g, '\\"')
+    queryParams.append('$search', `"${escapedSearch}"`)
+  }
   queryParams.append('$count', 'true')
   
   const queryString = queryParams.toString() ? `?${queryParams.toString()}` : ''

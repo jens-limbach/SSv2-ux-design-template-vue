@@ -78,7 +78,7 @@ async function crmRequest(endpoint, options = {}) {
 // Get all accounts
 app.get('/api/accounts', async (req, res) => {
   try {
-    const { $top, $skip, $orderby, $filter, $count, $select } = req.query
+    const { $top, $skip, $orderby, $filter, $count, $select, $search } = req.query
     
     // Build query string
     const params = new URLSearchParams()
@@ -88,6 +88,7 @@ app.get('/api/accounts', async (req, res) => {
     if ($filter) params.append('$filter', $filter)
     if ($count) params.append('$count', $count)
     if ($select) params.append('$select', $select)
+    if ($search) params.append('$search', $search)
     
     const queryString = params.toString() ? `?${params.toString()}` : ''
     const response = await crmRequest(`/sap/c4c/api/v1/account-service/accounts${queryString}`)
