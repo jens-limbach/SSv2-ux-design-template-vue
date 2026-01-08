@@ -11,6 +11,7 @@ interface ApiAccount {
   isProspect: boolean
   customerABCClassification: string
   customerABCClassificationDescription: string
+  lifeCycleStatus: string // Code (e.g., 'ACTIVE', 'IN_PREPARATION')
   lifeCycleStatusDescription: string
   primaryContactId: string
   primaryContactformattedName: string
@@ -80,6 +81,7 @@ export function mapAccountFromApi(apiAccount: ApiAccount): Account {
     abcClassification: apiAccount.customerABCClassification || '',
     abcClassificationDescription: apiAccount.customerABCClassificationDescription || '',
     status: mapStatusFromApi(apiAccount.lifeCycleStatusDescription),
+    statusCode: apiAccount.lifeCycleStatus || '',
     updatedOn: apiAccount.adminData?.updatedOn
   }
 }

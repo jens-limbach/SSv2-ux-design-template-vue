@@ -1,15 +1,17 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { watchDebounced } from '@vueuse/core'
 import { useAccountStore } from '@/stores/useAccountStore'
 import { useTableSort } from '@/composables/useTableSort'
-import { useUrlFilter } from '@/composables/useUrlFilter'
+import { useColumnFilter } from '@/composables/useColumnFilter'
 import { useModal } from '@/composables/useModal'
 import type { Account } from '@/types'
 import SapTable from '@/components/SapTable.vue'
 import SapSearchBox from '@/components/SapSearchBox.vue'
 import SapButton from '@/components/SapButton.vue'
 import SapIcon from '@/components/SapIcon.vue'
+import SapColumnFilters from '@/components/SapColumnFilters.vue'
+import SapFilterPill from '@/components/SapFilterPill.vue'
 import AccountModal from '@/components/AccountModal.vue'
 import SapPagination from '@/components/SapPagination.vue'
 import AnalyticsPanel from '@/components/AnalyticsPanel.vue'
@@ -28,143 +30,212 @@ const toggleAnalytics = () => {
 const selectedAccount = ref<Account | null>(null)
 const selectedAccountId = ref<string | null>(null)
 
-// URL query parameter filters
-const urlFilters = ref<Record<string, string>>({})
-
-// Parse URL query parameters
-const parseUrlFilters = () => {
-  const params = new URLSearchParams(window.location.search)
-  const filters: Record<string, string> = {}
-  
-  params.forEach((value, key) => {
-    // Normalize key to match Account property names (case-insensitive)
-    const normalizedKey = key.toLowerCase()
-    filters[normalizedKey] = value
-  })
-  
-  urlFilters.value = filters
-}
-
 // Search term for server-side search
 const searchTerm = ref('')
 
-// Apply URL query parameter filters (client-side)
-const { filteredItems: urlFilteredItems } = useUrlFilter(
-  computed(() => accountStore.accounts),
-  [] // URL filter keys can be added here in the future
-)
+// Column filter configuration
+const filterConfigs = [
+  { key: 'status', label: 'Status', apiField: 'lifeCycleStatus', type: 'multi' as const },
+  { key: 'country', label: 'Country', apiField: 'defaultAddress/country', type: 'multi' as const },
+  { key: 'abcClass', label: 'ABC Classification', apiField: 'customerABCClassification', type: 'multi' as const },
+  { key: 'industry', label: 'Industry', apiField: 'industrialSector', type: 'multi' as const }
+]
 
-// Additional URL filtering logic
-const finalFilteredItems = computed(() => {
-  if (Object.keys(urlFilters.value).length === 0) {
-    return urlFilteredItems.value
-  }
+// Initialize column filters
+const {
+  activeFilters,
+  syncFromUrl,
+  buildODataFilter,
+  removeFilter,
+  clearFilters,
+  getActiveFilterLabels
+} = useColumnFilter(filterConfigs)
+
+// Filter dropdown options (computed from store data)
+const filterOptions = computed(() => {
+  // Create code-to-description mappings
   
-  return urlFilteredItems.value.filter(account => {
-    return Object.entries(urlFilters.value).every(([key, value]) => {
-      // Find matching property (case-insensitive)
-      const accountKey = Object.keys(account).find(
-        k => k.toLowerCase() === key
-      ) as keyof Account | undefined
-      
-      if (!accountKey) return true // Skip unknown properties
-      
-      const accountValue = account[accountKey]
-      
-      // Handle different value types
-      if (typeof accountValue === 'boolean') {
-        return accountValue.toString().toLowerCase() === value.toLowerCase()
-      }
-      
-      // Case-insensitive string comparison
-      return String(accountValue).toLowerCase() === value.toLowerCase()
-    })
+  // Status mapping: code -> description
+  const statusMap = new Map<string, string>()
+  accountStore.accounts.forEach(a => {
+    if (a.statusCode && a.status) {
+      statusMap.set(a.statusCode, a.status)
+    }
   })
+  // Ensure all known statuses are included
+  statusMap.set('ACTIVE', 'Active')
+  statusMap.set('IN_PREPARATION', 'In Preparation')
+  statusMap.set('BLOCKED', 'Blocked')
+  statusMap.set('OBSOLETE', 'Obsolete')
+  
+  // ABC Classification mapping: code -> description
+  const abcMap = new Map<string, string>()
+  accountStore.accounts.forEach(a => {
+    if (a.abcClassification && a.abcClassificationDescription) {
+      abcMap.set(a.abcClassification, a.abcClassificationDescription)
+    }
+  })
+  
+  // Industry mapping: code -> description
+  const industryMap = new Map<string, string>()
+  // Use accountStore.industries for complete mapping
+  accountStore.industries.forEach(ind => {
+    industryMap.set(ind.id, ind.description)
+  })
+  // Also include industries from current accounts
+  accountStore.accounts.forEach(a => {
+    if (a.industryCode && a.industry) {
+      industryMap.set(a.industryCode, a.industry)
+    }
+  })
+  
+  // Countries (use value as both code and label)
+  const countries = [...new Set(accountStore.accounts.map(a => a.country).filter(Boolean))].sort()
+  
+  return [
+    {
+      key: 'status',
+      label: 'Status',
+      options: Array.from(statusMap.entries()).map(([code, desc]) => ({ 
+        value: code, 
+        label: desc 
+      })).sort((a, b) => a.label.localeCompare(b.label))
+    },
+    {
+      key: 'country',
+      label: 'Country',
+      options: countries.map(c => ({ value: c, label: c }))
+    },
+    {
+      key: 'abcClass',
+      label: 'ABC Classification',
+      options: Array.from(abcMap.entries()).map(([code, desc]) => ({ 
+        value: code, 
+        label: desc 
+      })).sort((a, b) => a.label.localeCompare(b.label))
+    },
+    {
+      key: 'industry',
+      label: 'Industry',
+      options: Array.from(industryMap.entries()).map(([code, desc]) => ({ 
+        value: code, 
+        label: desc 
+      })).sort((a, b) => a.label.localeCompare(b.label))
+    }
+  ]
 })
 
-// Sorting functionality
-const { sortedItems, sortBy, sortColumn, sortDirection } = useTableSort(finalFilteredItems)
+// Active filter pills for display
+const activeFilterPills = computed(() => getActiveFilterLabels())
 
-// Pagination - calculate based on API totalCount
-const itemsPerPage = ref(30)
+// Pagination
 const currentPage = ref(1)
+const itemsPerPage = ref(30)
 
 const totalPages = computed(() => {
   return Math.ceil(accountStore.totalCount / itemsPerPage.value)
 })
 
-const goToPage = (page: number) => {
-  if (page >= 1 && page <= totalPages.value) {
-    currentPage.value = page
-  }
-}
-
-// Fetch accounts function (with search parameter)
-const fetchAccountsWithSearch = (page: number = 1, perPage: number = 30, search?: string) => {
-  accountStore.fetchAccounts(page, perPage, search)
-  // Scroll to top when data changes
+// Fetch accounts with search and filters
+const fetchAccountsWithFilters = async (
+  page: number,
+  perPage: number,
+  search?: string,
+  filterString?: string
+) => {
+  await accountStore.fetchAccounts(page, perPage, search, filterString)
   window.scrollTo({ top: 0, behavior: 'smooth' })
 }
 
-// Watch currentPage and fetch new data from API
-watch(currentPage, (newPage) => {
-  const search = searchTerm.value.trim() || undefined
-  fetchAccountsWithSearch(newPage, itemsPerPage.value, search)
-})
+// Watch for filter changes
+watch(activeFilters, () => {
+  currentPage.value = 1 // Reset to page 1 when filters change
+  const filterString = buildODataFilter()
+  fetchAccountsWithFilters(
+    currentPage.value,
+    itemsPerPage.value,
+    searchTerm.value || undefined,
+    filterString || undefined
+  )
+}, { deep: true })
 
-// Watch itemsPerPage changes (when user changes page size)
-watch(itemsPerPage, (newPerPage) => {
-  currentPage.value = 1 // Reset to page 1
-  const search = searchTerm.value.trim() || undefined
-  fetchAccountsWithSearch(1, newPerPage, search)
-})
-
-// Watch searchTerm with debounce (300ms delay)
+// Debounced search (combines with active filters)
 watchDebounced(
   searchTerm,
   (newSearchTerm) => {
-    currentPage.value = 1 // Reset to page 1 on search
-    const search = newSearchTerm.trim() || undefined
-    fetchAccountsWithSearch(1, itemsPerPage.value, search)
+    currentPage.value = 1
+    const filterString = buildODataFilter()
+    fetchAccountsWithFilters(
+      currentPage.value,
+      itemsPerPage.value,
+      newSearchTerm || undefined,
+      filterString || undefined
+    )
   },
   { debounce: 300 }
 )
 
-// Handle clear search button
-const handleClearSearch = () => {
-  currentPage.value = 1 // Reset to page 1
-  // searchTerm is already cleared by SapSearchBox
-  // Fetch all accounts
-  fetchAccountsWithSearch(1, itemsPerPage.value, undefined)
+// Pagination handler
+const goToPage = (page: number) => {
+  if (page >= 1 && page <= totalPages.value) {
+    currentPage.value = page
+    const filterString = buildODataFilter()
+    fetchAccountsWithFilters(
+      currentPage.value,
+      itemsPerPage.value,
+      searchTerm.value || undefined,
+      filterString || undefined
+    )
+  }
 }
 
-// Display items (filtered and sorted, all items from current API fetch)
+// Clear search (keep filters active)
+const handleClearSearch = () => {
+  searchTerm.value = ''
+}
+
+// Handle filter update
+const handleFilterUpdate = (filters: Record<string, string[]>) => {
+  activeFilters.value = filters
+}
+
+// Handle clear all filters
+const handleClearAllFilters = () => {
+  clearFilters()
+}
+
+// Handle remove individual filter pill
+const handleRemoveFilterPill = (key: string) => {
+  removeFilter(key)
+}
+
+// Client-side sorting (for current page only)
+const { sortedItems, sortBy, sortColumn, sortDirection } = useTableSort(
+  computed(() => accountStore.accounts)
+)
+
+// Display items
 const displayItems = computed(() => sortedItems.value)
 
-// Load accounts on mount and parse URL filters
+// Load accounts on mount
 onMounted(async () => {
-  // Clear search term on mount for fresh start
-  searchTerm.value = ''
+  // Sync filters from URL first
+  syncFromUrl()
   
-  // Fetch dropdown data first (industries, contacts, employees)
+  // Fetch dropdown data
   await accountStore.fetchDropdownData()
   
-  // Then fetch accounts for table (page 1)
-  await accountStore.fetchAccounts(currentPage.value, itemsPerPage.value)
+  // Initial fetch with filters from URL
+  const filterString = buildODataFilter()
+  await fetchAccountsWithFilters(
+    currentPage.value,
+    itemsPerPage.value,
+    undefined,
+    filterString || undefined
+  )
   
-  // Start analytics fetch in background (non-blocking, don't await)
-  // By the time user clicks analytics button, data will likely be ready
+  // Start analytics fetch in background
   accountStore.fetchAnalyticsData()
-  
-  parseUrlFilters()
-  
-  // Listen for URL changes (e.g., back/forward navigation)
-  window.addEventListener('popstate', parseUrlFilters)
-})
-
-// Cleanup event listener
-onUnmounted(() => {
-  window.removeEventListener('popstate', parseUrlFilters)
 })
 
 // Handle add new account
@@ -182,22 +253,38 @@ const handleRowClick = (account: Account) => {
 }
 
 // Handle save account (create or update)
-const handleSaveAccount = (account: Account) => {
+const handleSaveAccount = async (account: Account) => {
   if (mode.value === 'create') {
-    accountStore.addAccount(account)
+    await accountStore.addAccount(account)
   } else {
-    accountStore.updateAccount(account.accountId, account)
+    await accountStore.updateAccount(account.accountId, account)
   }
   closeModal()
   selectedAccount.value = null
   selectedAccountId.value = null
+  
+  // Refresh with current filters
+  const filterString = buildODataFilter()
+  await fetchAccountsWithFilters(
+    currentPage.value,
+    itemsPerPage.value,
+    searchTerm.value || undefined,
+    filterString || undefined
+  )
 }
 
 // Handle delete account
-const handleDeleteAccount = (id: string) => {
-  accountStore.deleteAccount(id)
-  if (selectedAccountId.value === id) {
-    selectedAccountId.value = null
+const handleDeleteAccount = async (id: string) => {
+  if (!confirm('Are you sure you want to delete this account?')) return
+  
+  try {
+    await accountStore.deleteAccount(id)
+    if (selectedAccountId.value === id) {
+      selectedAccountId.value = null
+    }
+  } catch (error) {
+    console.error('Failed to delete account:', error)
+    alert('Failed to delete account. Please try again.')
   }
 }
 
@@ -218,8 +305,7 @@ const handleFieldUpdate = async (accountId: string, field: keyof Account, value:
     
     console.log('[Field Update] Accumulated updates:', updates)
     
-    // Debounce to allow multiple field updates (e.g., industry code + description)
-    // Increased to 150ms to reduce SAP backend lock conflicts
+    // Debounce to allow multiple field updates
     await new Promise(resolve => setTimeout(resolve, 150))
     
     // Check if still the latest update for this account
@@ -231,7 +317,6 @@ const handleFieldUpdate = async (accountId: string, field: keyof Account, value:
   } catch (error) {
     console.error('Failed to update field:', error)
     pendingUpdates.delete(accountId)
-    // Optionally show error to user
   }
 }
 
@@ -245,9 +330,36 @@ const handleCloseModal = () => {
 
 <template>
   <div class="table-container">
+    <!-- Filter Bar (at top) -->
+    <SapColumnFilters
+      :filters="filterOptions"
+      :model-value="activeFilters"
+      @update:model-value="handleFilterUpdate"
+      @clear="handleClearAllFilters"
+    />
+    
+    <!-- Active Filter Pills -->
+    <div v-if="activeFilterPills.length > 0" class="filter-pills-container">
+      <span class="filter-pills-label">Active Filters:</span>
+      <SapFilterPill
+        v-for="pill in activeFilterPills"
+        :key="pill.key"
+        :label="pill.label"
+        @remove="handleRemoveFilterPill(pill.key)"
+      />
+      <SapButton
+        variant="neutrallight"
+        size="md"
+        class="clear-all-filters-btn"
+        @click="handleClearAllFilters"
+      >
+        CLEAR ALL
+      </SapButton>
+    </div>
+    
     <!-- Table Header -->
     <div class="table-header">
-      <h1>Accounts ({{ accountStore.totalCount }})</h1>
+      <h1>Accounts ({{ accountStore.totalCount.toLocaleString() }})</h1>
       <div class="table-header__actions">
         <SapSearchBox v-model="searchTerm" @clear="handleClearSearch" />
         <SapButton

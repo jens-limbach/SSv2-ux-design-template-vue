@@ -16,6 +16,7 @@ export interface Account {
   abcClassification: string // Maps to customerABCClassification (ID)
   abcClassificationDescription: string // Maps to customerABCClassificationDescription (Display)
   status: Status // Maps to lifeCycleStatusDescription
+  statusCode?: string // Maps to lifeCycleStatus (Code for filtering - e.g., 'ACTIVE')
   updatedOn?: string // Maps to adminData.updatedOn (for If-Match header)
 }
 

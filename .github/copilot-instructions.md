@@ -154,6 +154,24 @@ Built upon SAP Fiori foundations with Sales and Service Cloud Version 2 enhancem
 .sap-crm-badge--neutral              // Gray badge
 ```
 
+### Column Filter Components
+```css
+.sap-crm-filter-bar                   // Main filter container
+.sap-crm-filter-bar__filters          // Filter dropdowns wrapper
+.sap-crm-filter-dropdown              // Individual filter dropdown
+.sap-crm-filter-dropdown__menu        // Dropdown menu (positioned absolute)
+.sap-crm-filter-dropdown__options     // Scrollable options container
+.sap-crm-filter-dropdown__option      // Individual checkbox option
+.sap-crm-filter-dropdown__actions     // Select All/Clear buttons area
+.sap-crm-filter-count                 // Active filter count badge "(2)"
+.sap-crm-filter-pill                  // Active filter tag (blue bg, white text)
+.sap-crm-filter-pill__label           // Filter pill text
+.sap-crm-filter-pill__remove          // Remove filter button (X)
+.filter-pills-container               // Container for active filter pills
+.filter-pills-label                   // "Active Filters:" label
+.clear-all-filters-btn                // Clear all button (blue text)
+```
+
 ### Table Container & Header
 ```css
 .table-container                      // Main table wrapper with styling
@@ -221,6 +239,52 @@ Built upon SAP Fiori foundations with Sales and Service Cloud Version 2 enhancem
       <button class="sap-crm-btn sap-crm-btn--primary">Save</button>
     </div>
   </div>
+</div>
+```
+
+### Column Filter Pattern
+```html
+<!-- Filter Bar -->
+<div class="sap-crm-filter-bar">
+  <div class="sap-crm-filter-bar__filters">
+    <div class="sap-crm-filter-dropdown">
+      <button type="button" class="sap-crm-btn sap-crm-flex sap-crm-btn--neutrallight sap-crm-btn--md">
+        <span class="sap-crm-btn--dropdown__text">
+          Status
+          <span class="sap-crm-filter-count">(2)</span>
+        </span>
+        <div class="sap-crm-icon sap-crm-icon--md sap-crm-btn__icon sap-crm-btn__icon--right">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M6.35146815,8.75146815 C6.82010434,8.28284395 7.57989666,8.28284395 8.04853285,8.75146815 L12,12.7029618 L15.9514841,8.75146815 C16.4200843,8.28284395 17.1799247,8.28284395 17.6485249,8.75146815 C18.117125,9.22010434 18.117125,9.97992066 17.6485249,10.4485209 L12.8485229,15.2485229 C12.3799227,15.717123 11.6200823,15.717123 11.1514821,15.2485229 L6.35146815,10.4485209 C5.88284395,9.97992066 5.88284395,9.22010434 6.35146815,8.75146815 Z"></path>
+          </svg>
+        </div>
+      </button>
+      <div class="sap-crm-filter-dropdown__menu">
+        <div class="sap-crm-filter-dropdown__options">
+          <label class="sap-crm-filter-dropdown__option">
+            <input type="checkbox" checked>
+            <span>Active</span>
+          </label>
+        </div>
+        <div class="sap-crm-filter-dropdown__actions">
+          <button class="sap-crm-btn sap-crm-btn--neutrallight sap-crm-btn--xsm">Select All</button>
+          <button class="sap-crm-btn sap-crm-btn--neutrallight sap-crm-btn--xsm">Clear</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Active Filter Pills -->
+<div class="filter-pills-container">
+  <span class="filter-pills-label">Active Filters:</span>
+  <span class="sap-crm-filter-pill">
+    <span class="sap-crm-filter-pill__label">Status: Active</span>
+    <button class="sap-crm-filter-pill__remove">✕</button>
+  </span>
+  <button class="sap-crm-btn sap-crm-btn--neutrallight sap-crm-btn--md clear-all-filters-btn">
+    CLEAR ALL
+  </button>
 </div>
 ```
 

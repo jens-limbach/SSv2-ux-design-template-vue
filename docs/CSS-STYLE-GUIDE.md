@@ -14,7 +14,8 @@ This guide documents the CSS styling used in this Vue.js application, based on t
 8. [Form Controls](#form-controls)
 9. [Icons](#icons)
 10. [Badges](#badges)
-11. [Usage Examples](#usage-examples)
+11. [Column Filters](#column-filters)
+12. [Usage Examples](#usage-examples)
 
 ---
 
@@ -993,6 +994,363 @@ Icons inherit the text color via `fill="currentColor"`:
 
 ---
 
+## Column Filters
+
+The column filter system provides dropdown-based filtering with multi-select support, URL persistence, and active filter pills. Based on SAP Sales and Service Cloud V2 design patterns.
+
+### Filter Bar
+
+Main container for filter dropdowns:
+
+```html
+<div class="sap-crm-filter-bar">
+  <div class="sap-crm-filter-bar__filters">
+    <!-- Filter dropdowns go here -->
+  </div>
+</div>
+```
+
+```css
+.sap-crm-filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 1.5rem;
+  margin-bottom: 1.5rem;
+  background-color: var(--color-neutral-white);
+  border: 1px solid var(--color-neutral-2);
+  border-radius: 0.5rem;
+}
+
+.sap-crm-filter-bar__filters {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex: 1;
+  flex-wrap: wrap;
+}
+```
+
+### Filter Dropdown
+
+Individual filter dropdown with button and menu:
+
+```html
+<div class="sap-crm-filter-dropdown">
+  <button 
+    type="button" 
+    class="sap-crm-btn sap-crm-flex sap-crm-btn--neutrallight sap-crm-btn--md"
+  >
+    <span class="sap-crm-btn--dropdown__text">
+      Status
+      <span class="sap-crm-filter-count">(2)</span>
+    </span>
+    <div class="sap-crm-icon sap-crm-icon--md sap-crm-btn__icon sap-crm-btn__icon--right">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6.35146815,8.75146815 C6.82010434,8.28284395 7.57989666,8.28284395 8.04853285,8.75146815 L12,12.7029618 L15.9514841,8.75146815 C16.4200843,8.28284395 17.1799247,8.28284395 17.6485249,8.75146815 C18.117125,9.22010434 18.117125,9.97992066 17.6485249,10.4485209 L12.8485229,15.2485229 C12.3799227,15.717123 11.6200823,15.717123 11.1514821,15.2485229 L6.35146815,10.4485209 C5.88284395,9.97992066 5.88284395,9.22010434 6.35146815,8.75146815 Z"></path>
+      </svg>
+    </div>
+  </button>
+  
+  <div class="sap-crm-filter-dropdown__menu">
+    <!-- Menu content -->
+  </div>
+</div>
+```
+
+#### Dropdown Arrow Icon
+
+The dropdown uses a standard SAP arrow icon that changes direction based on state:
+
+```html
+<div class="sap-crm-icon sap-crm-icon--md sap-crm-btn__icon sap-crm-btn__icon--right">
+  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <path d="M6.35146815,8.75146815 C6.82010434,8.28284395 7.57989666,8.28284395 8.04853285,8.75146815 L12,12.7029618 L15.9514841,8.75146815 C16.4200843,8.28284395 17.1799247,8.28284395 17.6485249,8.75146815 C18.117125,9.22010434 18.117125,9.97992066 17.6485249,10.4485209 L12.8485229,15.2485229 C12.3799227,15.717123 11.6200823,15.717123 11.1514821,15.2485229 L6.35146815,10.4485209 C5.88284395,9.97992066 5.88284395,9.22010434 6.35146815,8.75146815 Z"></path>
+  </svg>
+</div>
+```
+
+**Key Features:**
+- Medium size icon (`sap-crm-icon--md`)
+- Positioned on right side of button (`sap-crm-btn__icon--right`)
+- Uses `fill: currentColor` to inherit button text color
+- Properly centered with flex layout
+
+```css
+.sap-crm-filter-dropdown {
+  position: relative;
+}
+
+.sap-crm-filter-dropdown .sap-crm-btn {
+  color: var(--color-primary-4); /* SAP Blue */
+}
+
+.sap-crm-filter-dropdown .sap-crm-btn--active {
+  background-color: var(--color-primary-1);
+  border-color: var(--color-primary-4);
+  color: var(--color-primary-4);
+  font-weight: 600;
+}
+
+.sap-crm-filter-count {
+  margin-left: 0.25rem;
+  font-weight: 600;
+}
+```
+
+### Filter Dropdown Menu
+
+The dropdown menu with checkboxes:
+
+```html
+<div class="sap-crm-filter-dropdown__menu">
+  <div class="sap-crm-filter-dropdown__options">
+    <label class="sap-crm-filter-dropdown__option">
+      <input type="checkbox" checked>
+      <span>Active</span>
+    </label>
+    <label class="sap-crm-filter-dropdown__option">
+      <input type="checkbox">
+      <span>Inactive</span>
+    </label>
+  </div>
+  
+  <div class="sap-crm-filter-dropdown__actions">
+    <button class="sap-crm-btn sap-crm-btn--neutrallight sap-crm-btn--xsm">
+      Select All
+    </button>
+    <button class="sap-crm-btn sap-crm-btn--neutrallight sap-crm-btn--xsm">
+      Clear
+    </button>
+  </div>
+</div>
+```
+
+```css
+.sap-crm-filter-dropdown__menu {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  left: 0;
+  min-width: 220px;
+  max-width: 320px;
+  background-color: #ffffff;
+  border: 1px solid var(--color-neutral-2);
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 16px rgba(34, 53, 72, 0.15);
+  overflow: hidden;
+  z-index: 1000;
+}
+
+.sap-crm-filter-dropdown__options {
+  max-height: 300px;
+  overflow-y: auto;
+  padding: 0.5rem 0;
+}
+
+.sap-crm-filter-dropdown__option {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.sap-crm-filter-dropdown__option:hover {
+  background-color: var(--color-neutral-1);
+}
+
+.sap-crm-filter-dropdown__option input[type="checkbox"] {
+  cursor: pointer;
+}
+
+.sap-crm-filter-dropdown__actions {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  border-top: 1px solid var(--color-neutral-2);
+}
+```
+
+### Filter Pills Container
+
+Container for active filter pills:
+
+```html
+<div class="filter-pills-container">
+  <span class="filter-pills-label">Active Filters:</span>
+  
+  <!-- Filter pills -->
+  <span class="sap-crm-filter-pill">
+    <span class="sap-crm-filter-pill__label">Status: Active</span>
+    <button class="sap-crm-filter-pill__remove" aria-label="Remove filter">✕</button>
+  </span>
+  
+  <!-- Clear All button -->
+  <button class="sap-crm-btn sap-crm-btn--neutrallight sap-crm-btn--md clear-all-filters-btn">
+    CLEAR ALL
+  </button>
+</div>
+```
+
+```css
+.filter-pills-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  margin-bottom: 1rem;
+  background-color: var(--color-neutral-1);
+  border-radius: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.filter-pills-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+}
+```
+
+### Filter Pills
+
+Individual filter pill with SAP blue background and white text:
+
+```html
+<span class="sap-crm-filter-pill">
+  <span class="sap-crm-filter-pill__label">Status: Active</span>
+  <button class="sap-crm-filter-pill__remove" aria-label="Remove filter">✕</button>
+</span>
+```
+
+```css
+.sap-crm-filter-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.25rem 0.5rem;
+  background-color: var(--color-primary-4);  /* SAP Blue */
+  border: 1px solid var(--color-primary-4);
+  border-radius: 1rem;
+  font-size: 0.875rem;
+  color: #ffffff;  /* White text */
+  line-height: 1.2;
+}
+
+.sap-crm-filter-pill__label {
+  line-height: 1.4;
+  color: #ffffff;
+}
+
+.sap-crm-filter-pill__remove {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1rem;
+  height: 1rem;
+  padding: 0;
+  background: none;
+  border: none;
+  color: #ffffff;
+  cursor: pointer;
+  font-size: 0.75rem;
+  font-weight: bold;
+  transition: opacity 0.15s ease;
+  opacity: 0.9;
+}
+
+.sap-crm-filter-pill__remove:hover {
+  opacity: 1;
+}
+```
+
+### Clear All Filters Button
+
+Button with blue text to clear all active filters:
+
+```css
+.clear-all-filters-btn {
+  color: var(--color-primary-4);
+  margin-left: 0.5rem;
+}
+```
+
+### Complete Filter Example
+
+```html
+<!-- Filter Bar -->
+<div class="sap-crm-filter-bar">
+  <div class="sap-crm-filter-bar__filters">
+    <!-- Status Filter -->
+    <div class="sap-crm-filter-dropdown">
+      <button type="button" class="sap-crm-btn sap-crm-flex sap-crm-btn--neutrallight sap-crm-btn--md">
+        <span class="sap-crm-btn--dropdown__text">
+          Status
+          <span class="sap-crm-filter-count">(2)</span>
+        </span>
+        <div class="sap-crm-icon sap-crm-icon--md sap-crm-btn__icon sap-crm-btn__icon--right">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M6.35146815,8.75146815 C6.82010434,8.28284395 7.57989666,8.28284395 8.04853285,8.75146815 L12,12.7029618 L15.9514841,8.75146815 C16.4200843,8.28284395 17.1799247,8.28284395 17.6485249,8.75146815 C18.117125,9.22010434 18.117125,9.97992066 17.6485249,10.4485209 L12.8485229,15.2485229 C12.3799227,15.717123 11.6200823,15.717123 11.1514821,15.2485229 L6.35146815,10.4485209 C5.88284395,9.97992066 5.88284395,9.22010434 6.35146815,8.75146815 Z"></path>
+          </svg>
+        </div>
+      </button>
+      
+      <div class="sap-crm-filter-dropdown__menu">
+        <div class="sap-crm-filter-dropdown__options">
+          <label class="sap-crm-filter-dropdown__option">
+            <input type="checkbox" checked>
+            <span>Active</span>
+          </label>
+          <label class="sap-crm-filter-dropdown__option">
+            <input type="checkbox" checked>
+            <span>In Preparation</span>
+          </label>
+          <label class="sap-crm-filter-dropdown__option">
+            <input type="checkbox">
+            <span>Blocked</span>
+          </label>
+        </div>
+        <div class="sap-crm-filter-dropdown__actions">
+          <button class="sap-crm-btn sap-crm-btn--neutrallight sap-crm-btn--xsm">Select All</button>
+          <button class="sap-crm-btn sap-crm-btn--neutrallight sap-crm-btn--xsm">Clear</button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- More filters... -->
+  </div>
+</div>
+
+<!-- Active Filter Pills -->
+<div class="filter-pills-container">
+  <span class="filter-pills-label">Active Filters:</span>
+  
+  <span class="sap-crm-filter-pill">
+    <span class="sap-crm-filter-pill__label">Status: Active</span>
+    <button class="sap-crm-filter-pill__remove" aria-label="Remove filter">✕</button>
+  </span>
+  
+  <span class="sap-crm-filter-pill">
+    <span class="sap-crm-filter-pill__label">Status: In Preparation</span>
+    <button class="sap-crm-filter-pill__remove" aria-label="Remove filter">✕</button>
+  </span>
+  
+  <button class="sap-crm-btn sap-crm-btn--neutrallight sap-crm-btn--md clear-all-filters-btn">
+    CLEAR ALL
+  </button>
+</div>
+```
+
+### Filter Behavior Notes
+
+**Multi-Select:** Filters support multiple selections with checkbox controls  
+**URL Persistence:** Active filters are synced to URL parameters for bookmarking and sharing  
+**OData Integration:** Filters generate OData `$filter` query strings for backend filtering  
+**Dropdown Arrow:** Uses standard SAP arrow icon that inherits button text color  
+**Clear All:** Button appears only when filters are active, displays in blue text
+
+---
+
 ## Usage Examples
 
 ### Complete Form Example
@@ -1329,7 +1687,7 @@ function MyButton() {
 ### CSS File Sizes
 - **sap-crm-colors.css**: ~400 lines (color definitions only)
 - **sap-crm-global.css**: ~340 lines (resets and typography)
-- **sap-crm-components.css**: ~3200 lines (all UI components)
+- **sap-crm-components.css**: ~3325 lines (all UI components including filters)
 
 ### Browser Support
 - Chrome/Edge (latest)

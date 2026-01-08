@@ -42,8 +42,9 @@ export const useAccountStore = defineStore('account', () => {
    * @param page - Current page number (1-indexed)
    * @param itemsPerPage - Number of items per page
    * @param search - Optional search term for server-side search
+   * @param filter - Optional OData filter string for server-side filtering
    */
-  async function fetchAccounts(page: number = 1, itemsPerPage: number = 30, search?: string) {
+  async function fetchAccounts(page: number = 1, itemsPerPage: number = 30, search?: string, filter?: string) {
     loading.value = true
     error.value = null
     try {
@@ -52,7 +53,8 @@ export const useAccountStore = defineStore('account', () => {
         top: itemsPerPage,
         skip: skip,
         orderby: 'formattedName asc',
-        search: search
+        search: search,
+        filter: filter
       })
       accounts.value = result.accounts
       totalCount.value = result.count
