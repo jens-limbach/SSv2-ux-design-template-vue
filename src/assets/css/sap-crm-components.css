@@ -980,6 +980,61 @@
 
 
 /* ========================================
+   BADGES
+   ======================================== */
+
+/**
+ * SAP CRM Badge Styles
+ * Status indicators and labels with semantic colors
+ * 
+ * Usage:
+ * <span class="sap-crm-badge sap-crm-badge--success">Active</span>
+ * <span class="sap-crm-badge sap-crm-badge--error">Error</span>
+ */
+
+.sap-crm-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.125rem 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  border-radius: 0.25rem;
+  white-space: nowrap;
+  line-height: 1.2;
+}
+
+.sap-crm-badge--primary {
+  background: var(--color-primary-1);
+  color: var(--color-primary-5);
+}
+
+.sap-crm-badge--success {
+  background: var(--color-accent-green-1);
+  color: var(--color-accent-green-5);
+}
+
+.sap-crm-badge--error {
+  background: var(--color-accent-red-1);
+  color: var(--color-accent-red-5);
+}
+
+.sap-crm-badge--warning {
+  background: var(--color-accent-yellow-1);
+  color: var(--color-accent-yellow-5);
+}
+
+.sap-crm-badge--info {
+  background: var(--color-primary-1);
+  color: var(--color-primary-5);
+}
+
+.sap-crm-badge--neutral {
+  background: var(--color-neutral-1);
+  color: var(--color-neutral-6);
+}
+
+
+/* ========================================
    BUTTONS
    ======================================== */
 

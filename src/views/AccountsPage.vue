@@ -425,13 +425,22 @@ const handleCloseModal = () => {
       @update="handleFieldUpdate"
     />
     
-    <!-- Pagination -->
-    <SapPagination
-      v-if="!accountStore.loading && !accountStore.error && accountStore.totalCount > 0"
-      :current-page="currentPage"
-      :total-pages="totalPages"
-      @update:current-page="goToPage"
-    />
+    <!-- Pagination & CSS Guide Link -->
+    <div v-if="!accountStore.loading && !accountStore.error && accountStore.totalCount > 0" 
+         style="display: flex; justify-content: space-between; align-items: center;">
+      <a 
+        href="/css-showcase.html" 
+        target="_blank"
+        style="font-size: 0.625rem; color: var(--sap-crm-text-secondary); text-decoration: none; opacity: 0.7; padding-left: 1rem;"
+        title="Open CSS Design System Showcase">
+        CSS Design Guide
+      </a>
+      <SapPagination
+        :current-page="currentPage"
+        :total-pages="totalPages"
+        @update:current-page="goToPage"
+      />
+    </div>
     
     <!-- Account Modal (Create/Edit) -->
     <AccountModal

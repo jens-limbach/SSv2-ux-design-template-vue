@@ -2,6 +2,30 @@
 
 This guide documents the CSS styling used in this Vue.js application, based on the SAP Sales and Service Cloud Version 2 design system (SAP Horizon). These styles can be reused in pure HTML pages or any JavaScript framework.
 
+---
+
+## 🚀 Interactive CSS Showcase (NEW!)
+
+**Want to see live examples with copy-able code?**
+
+👉 **[Open Interactive CSS Showcase](/css-showcase.html)** 👈
+
+The showcase page provides:
+- ✨ **Live interactive examples** for every component
+- 📋 **Copy-to-clipboard** code snippets
+- 🎨 **Color swatches** with variable names
+- 🔘 **All button variants** and sizes
+- 📊 **Table examples** with row states
+- 🏷️ **Badges, filters, icons, pagination**
+- 📱 **Modal dialogs** and form layouts
+- 🌐 **Framework-agnostic** HTML + CSS only
+
+Access it from the main application by clicking the **"CSS Guide"** button in the header, or navigate directly to `/css-showcase.html`.
+
+This documentation below provides detailed technical reference, while the showcase gives you instant visual examples you can copy and use.
+
+---
+
 ## 📋 Table of Contents
 
 1. [Architecture Overview](#architecture-overview)

@@ -10,6 +10,7 @@ This project serves as a **reference implementation** for developers building mo
 - ✅ **Secure Authentication** - Express proxy server with Basic Auth (credentials never exposed to client)
 - ✅ **Modern Vue 3** with Composition API and TypeScript
 - ✅ **SAP Fiori Design System** (Sales & Service Cloud V2 variation) - [Complete CSS Style Guide](docs/CSS-STYLE-GUIDE.md) 🎨
+- ✅ **Interactive CSS Showcase** - [Live component examples](/css-showcase.html) with copy-able code snippets 🚀
 - ✅ **Reactive State Management** with Pinia
 - ✅ **Full CRUD Operations** - Create, Read, Update, Delete with optimistic locking (If-Match)
 - ✅ **Server-Side Pagination** - Efficient data loading with OData $top/$skip/$count
@@ -17,6 +18,26 @@ This project serves as a **reference implementation** for developers building mo
 - ✅ **Cloud Foundry Ready** - Deployment configuration for SAP BTP
 - ✅ **Accessibility** - WCAG 2.1 AA compliant
 - ✅ **Entity Migration Guide** - Easy adaptation to other entities (Opportunities, Leads, etc.)
+
+## 🎨 Interactive CSS Design System Showcase
+
+**NEW!** Explore the complete SAP Sales and Service Cloud V2 design system with live, interactive examples:
+
+👉 **[Open CSS Showcase Page](/css-showcase.html)** 👈
+
+The showcase includes:
+- 🎨 **Color System** - Complete color palette with swatches and variable names
+- 🔘 **Buttons** - All variants, sizes, and toggle buttons
+- 📋 **Forms** - Inputs, selects, textareas, checkboxes, radios, switches
+- 📊 **Tables** - Table structure, row states, status indicators
+- 🏷️ **Badges** - All semantic colors
+- 🔍 **Filters** - Filter dropdowns and active filter pills
+- 📄 **Pagination** - Page controls and items-per-page selectors
+- 📱 **Modals** - Dialog structure and form layouts
+- **Copy-to-clipboard** code snippets for every component
+- **Framework-agnostic** - Works with Vue, React, Angular, or plain HTML
+
+Access it from the app by clicking the "CSS Guide" button in the header, or visit `/css-showcase.html` directly.
 
 ## 📸 Screenshots
 
