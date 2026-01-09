@@ -427,7 +427,7 @@ const handleCloseModal = () => {
     
     <!-- Pagination -->
     <SapPagination
-      v-if="!accountStore.loading && !accountStore.error && totalPages > 1"
+      v-if="!accountStore.loading && !accountStore.error && accountStore.totalCount > 0"
       :current-page="currentPage"
       :total-pages="totalPages"
       @update:current-page="goToPage"

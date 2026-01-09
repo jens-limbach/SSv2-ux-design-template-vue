@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch, computed } from 'vue'
+import { ref, watch, computed, onMounted, onUnmounted } from 'vue'
 import type { Account, Status } from '@/types'
 import { useAccountStore } from '@/stores/useAccountStore'
 import SapButton from './SapButton.vue'
@@ -26,6 +26,98 @@ const emit = defineEmits<{
 }>()
 
 const accountStore = useAccountStore()
+
+// Menu state
+const isMenuOpen = ref(false)
+const menuRef = ref<HTMLElement | null>(null)
+const menuButtonRef = ref<HTMLElement | null>(null)
+
+// Toggle menu
+const toggleMenu = (event: Event) => {
+  event.stopPropagation()
+  isMenuOpen.value = !isMenuOpen.value
+}
+
+// Close menu when clicking outside
+const handleClickOutside = (event: MouseEvent) => {
+  if (!isMenuOpen.value) return
+  
+  const target = event.target as HTMLElement
+  
+  // Check if the click is outside the menu container
+  if (menuRef.value && !menuRef.value.contains(target)) {
+    isMenuOpen.value = false
+  }
+}
+
+// Navigation functions using window.postMessage for SAP CRM integration
+const openAccountDetails = () => {
+  if (!props.account?.id) return
+  
+  const message = {
+    operation: 'navigation',
+    params: {
+      objectKey: props.account.id,
+      routingKey: 'mdaccount',
+      viewType: 'details'
+    }
+  }
+  window.parent.postMessage(message, '*')
+  isMenuOpen.value = false
+}
+
+const createOpportunity = () => {
+  // TODO: Add account ID to attributes once tested
+  const message = {
+    operation: 'navigation',
+    params: {
+      routingKey: 'guidedselling',
+      viewType: 'quickcreate'
+    }
+  }
+  window.parent.postMessage(message, '*')
+  isMenuOpen.value = false
+}
+
+const createQuote = () => {
+  // TODO: Add account ID to attributes once tested
+  const message = {
+    operation: 'navigation',
+    params: {
+      routingKey: 'sales-quote',
+      viewType: 'quickcreate'
+    }
+  }
+  window.parent.postMessage(message, '*')
+  isMenuOpen.value = false
+}
+
+const createCase = () => {
+  if (!props.account?.id) return
+  
+  const message = {
+    operation: 'navigation',
+    params: {
+      routingKey: 'case',
+      viewType: 'quickcreate',
+      attributes: `[{"name":"partyDetails","value":{"account":{"id":"${props.account.id}"}}}]`
+    }
+  }
+  window.parent.postMessage(message, '*')
+  isMenuOpen.value = false
+}
+
+// Setup click-outside listener
+onMounted(() => {
+  // Use mousedown for more reliable outside click detection
+  setTimeout(() => {
+    document.addEventListener('mousedown', handleClickOutside)
+  }, 100)
+})
+
+onUnmounted(() => {
+  document.removeEventListener('mousedown', handleClickOutside)
+})
 
 // Form data
 const form = ref<Partial<Account>>({
@@ -130,14 +222,19 @@ watch(() => props.account, (newAccount) => {
   }
 }, { immediate: true })
 
-// Reset form when modal closes
+// Reset form and menu when modal closes or opens
 watch(() => props.isOpen, (isOpen) => {
   if (!isOpen) {
     setTimeout(() => {
       resetForm()
+      isMenuOpen.value = false
     }, 300)
-  } else if (props.mode === 'create') {
-    resetForm()
+  } else {
+    // Reset menu state when modal opens
+    isMenuOpen.value = false
+    if (props.mode === 'create') {
+      resetForm()
+    }
   }
 })
 
@@ -230,13 +327,44 @@ const handleBackdropClick = (event: MouseEvent) => {
     <div class="modal">
       <div class="modal-header">
         <h2>{{ modalTitle }}</h2>
-        <SapButton
-          variant="neutrallight"
-          size="sm"
-          icon-only
-          @click="handleClose">
-          <SapIcon type="close" size="md" />
-        </SapButton>
+        <div style="display: flex; gap: 0.5rem; align-items: center;">
+          <!-- Meatballs menu button (only in edit mode) -->
+          <div v-if="mode === 'edit' && account" class="sap-crm-modal-menu__button-wrapper">
+            <SapButton
+              ref="menuButtonRef"
+              variant="secondary"
+              size="md"
+              icon-only
+              @click="toggleMenu">
+              <SapIcon type="meatballs" size="md" />
+            </SapButton>
+            
+            <!-- Dropdown menu -->
+            <div v-if="isMenuOpen" ref="menuRef" class="sap-crm-modal-menu" @click.stop>
+              <div class="sap-crm-modal-menu__item" @click="openAccountDetails">
+                Open Account Details
+              </div>
+              <div class="sap-crm-modal-menu__item" @click="createOpportunity">
+                Create Opportunity
+              </div>
+              <div class="sap-crm-modal-menu__item" @click="createQuote">
+                Create Quote
+              </div>
+              <div class="sap-crm-modal-menu__item" @click="createCase">
+                Create Case
+              </div>
+            </div>
+          </div>
+          
+          <!-- Close button -->
+          <SapButton
+            variant="secondary"
+            size="md"
+            icon-only
+            @click="handleClose">
+            <SapIcon type="close" size="md" />
+          </SapButton>
+        </div>
       </div>
       
       <div class="modal-body">

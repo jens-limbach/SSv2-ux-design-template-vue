@@ -828,6 +828,35 @@ The application includes a comprehensive set of SVG icons optimized for the SAP 
 </svg>
 ```
 
+#### Meatballs Icon (More Actions Menu)
+**Type:** `meatballs` | **Usage:** Context menus, action dropdowns, more options
+
+```html
+<svg class="sap-crm-icon sap-crm-icon--md" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" role="img" aria-label="meatballs">
+  <path fill="#0070F2" d="M5,10 C6.10457,10 7,10.8954 7,12 C7,13.1046 6.10457,14 5,14 C3.89543,14 3,13.1046 3,12 C3,10.8954 3.89543,10 5,10 Z M19,10 C20.1046,10 21,10.8954 21,12 C21,13.1046 20.1046,14 19,14 C17.8954,14 17,13.1046 17,12 C17,10.8954 17.8954,10 19,10 Z M12,10 C13.1046,10 14,10.8954 14,12 C14,13.1046 13.1046,14 12,14 C10.8954,14 10,13.1046 10,12 C10,10.8954 10.8954,10 12,10 Z" />
+</svg>
+```
+
+**Typical Usage:** Combined with a dropdown menu for displaying contextual actions.
+
+```html
+<!-- Icon button with dropdown menu -->
+<div class="sap-crm-modal-menu__button-wrapper">
+  <button class="sap-crm-btn sap-crm-btn--primary sap-crm-btn--sm sap-crm-btn--md--icon_only" aria-label="More actions">
+    <svg class="sap-crm-icon sap-crm-icon--md" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+      <path fill="#0070F2" d="M5,10 C6.10457,10 7,10.8954 7,12 C7,13.1046 6.10457,14 5,14 C3.89543,14 3,13.1046 3,12 C3,10.8954 3.89543,10 5,10 Z M19,10 C20.1046,10 21,10.8954 21,12 C21,13.1046 20.1046,14 19,14 C17.8954,14 17,13.1046 17,12 C17,10.8954 17.8954,10 19,10 Z M12,10 C13.1046,10 14,10.8954 14,12 C14,13.1046 13.1046,14 12,14 C10.8954,14 10,13.1046 10,12 C10,10.8954 10.8954,10 12,10 Z" />
+    </svg>
+  </button>
+  
+  <!-- Dropdown menu (shown on click) -->
+  <div class="sap-crm-modal-menu">
+    <div class="sap-crm-modal-menu__item">Action 1</div>
+    <div class="sap-crm-modal-menu__item">Action 2</div>
+    <div class="sap-crm-modal-menu__item">Action 3</div>
+  </div>
+</div>
+```
+
 ### Icon Usage Patterns
 
 #### In Buttons

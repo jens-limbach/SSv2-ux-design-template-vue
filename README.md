@@ -154,6 +154,47 @@ cf push
 - ✅ **Environment Variables** - Sensitive data stored outside of code
 - ✅ **CORS Protection** - Configured for development and production environments
 
+### CRM Navigation Integration
+- ✅ **Direct Entity Navigation** - Click Company Name, Contact Person, or Owner to open entity in CRM
+- ✅ **window.postMessage API** - Seamless integration with SAP Sales & Service Cloud V2 shell
+- ✅ **Quick View Support** - Opens entity details in overlay without leaving context
+- ✅ **Smart Fallback** - Navigation links only appear when entity UUIDs are available
+
+**How it Works:**
+
+The application uses the SAP Sales & Service Cloud V2 navigation API to enable direct navigation from table entries to their corresponding CRM entities. When users click on **Company Name**, **Contact Person**, or **Owner** fields, the application sends a `window.postMessage()` to the parent CRM shell with the following structure:
+
+```javascript
+{
+  operation: 'navigation',
+  params: {
+    objectKey: '<entity-uuid>',      // UUID of the entity
+    routingKey: '<entity-type>',     // mdaccount, mdcontact, or mdemployee
+    viewType: 'quickview'            // Opens in overlay
+  }
+}
+```
+
+**Supported Entity Types:**
+- **Company Name** → `mdaccount` (Account entity)
+- **Contact Person** → `mdcontact` (Contact entity)
+- **Owner** → `mdemployee` (Employee entity)
+
+**Implementation Details:**
+- Navigation links are styled with semi-bold font weight and dark grey color (#1D2D3E)
+- Hover effect shows underline to indicate interactivity
+- Click events use `@click.stop` to prevent row selection
+- Conditional rendering: links only appear when entity UUID is available
+- Falls back to plain text when UUID is missing
+
+**Official Documentation:**
+For complete details on the SAP Sales & Service Cloud V2 navigation API, see:
+📖 [SAP Help: Navigation via postMessage](https://help.sap.com/docs/help/23ec04ee830846958605622f27ff5c3d/e4ce508cf44f413faa7f1bc5fb4537bb.html)
+
+**Code Location:**
+- Navigation function: [`SapTableRow.vue`](src/components/SapTableRow.vue) - `navigateToCrm()` method
+- Navigation styles: [`sap-crm-components.css`](src/assets/css/sap-crm-components.css) - `.sap-crm-table__nav-link` class
+
 ---
 
 ## 📚 Documentation
