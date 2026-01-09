@@ -121,12 +121,23 @@ section {
   display: block;
 }
 
+/* Root App Container */
+#app {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
 /* Body Defaults */
 body {
   line-height: 1;
   font-family: "72", Helvetica, -apple-system, Arial, sans-serif;
   background-color: var(--color-background-normal);
   padding: 2rem;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 /* Lists */

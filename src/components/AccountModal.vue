@@ -66,12 +66,14 @@ const openAccountDetails = () => {
 }
 
 const createOpportunity = () => {
-  // TODO: Add account ID to attributes once tested
+  if (!props.account?.id) return
+  
   const message = {
     operation: 'navigation',
     params: {
       routingKey: 'guidedselling',
-      viewType: 'quickcreate'
+      viewType: 'quickcreate',
+      attributes: `[{"name":"account","value":{"id":"${props.account.id}"}}]`
     }
   }
   window.parent.postMessage(message, '*')
@@ -79,12 +81,14 @@ const createOpportunity = () => {
 }
 
 const createQuote = () => {
-  // TODO: Add account ID to attributes once tested
+  if (!props.account?.id) return
+  
   const message = {
     operation: 'navigation',
     params: {
       routingKey: 'sales-quote',
-      viewType: 'quickcreate'
+      viewType: 'quickcreate',
+      attributes: `[{"name":"partyDetails","value":{"account":{"id":"${props.account.id}"}}}]`
     }
   }
   window.parent.postMessage(message, '*')
