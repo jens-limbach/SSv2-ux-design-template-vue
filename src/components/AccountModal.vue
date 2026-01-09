@@ -30,7 +30,6 @@ const accountStore = useAccountStore()
 // Menu state
 const isMenuOpen = ref(false)
 const menuRef = ref<HTMLElement | null>(null)
-const menuButtonRef = ref<HTMLElement | null>(null)
 
 // Toggle menu
 const toggleMenu = (event: Event) => {

@@ -2991,7 +2991,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1.5rem;
+  padding: 1rem;
   border-bottom: 1px solid var(--color-neutral-2);
 }
 
@@ -3256,7 +3256,7 @@
   align-items: center;
   gap: 0.75rem;
   padding: 1rem 1.5rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 0.25rem;
   background-color: var(--color-neutral-white);
   border: 1px solid var(--color-neutral-2);
   border-radius: 0.5rem;
@@ -3347,7 +3347,7 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.75rem 1.5rem;
-  margin-bottom: 1rem;
+  margin-bottom: 0.25rem;
   background-color: var(--color-neutral-1);
   border-radius: 0.5rem;
   flex-wrap: wrap;
