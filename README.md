@@ -156,11 +156,12 @@ cf push
 
 ### CRM Navigation Integration
 - ✅ **Direct Entity Navigation** - Click Company Name, Contact Person, or Owner to open entity in CRM
+- ✅ **Modal Action Menu** - Meatballs menu (⋯) in account edit modal for quick actions
 - ✅ **window.postMessage API** - Seamless integration with SAP Sales & Service Cloud V2 shell
 - ✅ **Quick View Support** - Opens entity details in overlay without leaving context
 - ✅ **Smart Fallback** - Navigation links only appear when entity UUIDs are available
 
-**How it Works:**
+#### Table Navigation Links
 
 The application uses the SAP Sales & Service Cloud V2 navigation API to enable direct navigation from table entries to their corresponding CRM entities. When users click on **Company Name**, **Contact Person**, or **Owner** fields, the application sends a `window.postMessage()` to the parent CRM shell with the following structure:
 
@@ -187,13 +188,62 @@ The application uses the SAP Sales & Service Cloud V2 navigation API to enable d
 - Conditional rendering: links only appear when entity UUID is available
 - Falls back to plain text when UUID is missing
 
-**Official Documentation:**
-For complete details on the SAP Sales & Service Cloud V2 navigation API, see:
-📖 [SAP Help: Navigation via postMessage](https://help.sap.com/docs/help/23ec04ee830846958605622f27ff5c3d/e4ce508cf44f413faa7f1bc5fb4537bb.html)
-
 **Code Location:**
 - Navigation function: [`SapTableRow.vue`](src/components/SapTableRow.vue) - `navigateToCrm()` method
 - Navigation styles: [`sap-crm-components.css`](src/assets/css/sap-crm-components.css) - `.sap-crm-table__nav-link` class
+
+#### Modal Action Menu (Meatballs Menu)
+
+When editing an existing account, a **meatballs menu** (three horizontal dots ⋯) appears in the modal header, providing quick access to related CRM actions:
+
+**Menu Actions:**
+1. **Open Account Details** - Opens full account details view in CRM
+   - Routing Key: `mdaccount`
+   - View Type: `details`
+   
+2. **Create Opportunity** - Creates new opportunity linked to current account
+   - Routing Key: `guidedselling`
+   - View Type: `quickcreate`
+   
+3. **Create Quote** - Creates new quote for current account
+   - Routing Key: `sales-quote`
+   - View Type: `quickcreate`
+   
+4. **Create Case** - Creates new support case with account context
+   - Routing Key: `case`
+   - View Type: `quickcreate`
+   - Includes account ID in attributes
+
+**Example postMessage Structure:**
+```javascript
+// Create Case with account context
+{
+  operation: 'navigation',
+  params: {
+    routingKey: 'case',
+    viewType: 'quickcreate',
+    attributes: {
+      BuyerPartyID: '<account-uuid>'
+    }
+  }
+}
+```
+
+**UI/UX Features:**
+- Menu only appears in **edit mode** (when viewing existing account)
+- Click outside menu to close automatically
+- Menu resets when modal closes/reopens
+- Styled to match SAP Fiori secondary buttons
+- Smooth transitions and light gray hover effect
+
+**Code Location:**
+- Modal menu component: [`AccountModal.vue`](src/components/AccountModal.vue) - Navigation functions and menu template
+- Menu styles: [`sap-crm-components.css`](src/assets/css/sap-crm-components.css) - `.sap-crm-modal-menu` classes
+- Icon: [`SapIcon.vue`](src/components/SapIcon.vue) - `meatballs` icon type
+
+**Official Documentation:**
+For complete details on the SAP Sales & Service Cloud V2 navigation API, see:
+📖 [SAP Help: Navigation via postMessage](https://help.sap.com/docs/help/23ec04ee830846958605622f27ff5c3d/e4ce508cf44f413faa7f1bc5fb4537bb.html)
 
 ---
 
@@ -554,12 +604,19 @@ Pagination controls with page size selector.
 SVG icon component with predefined icons.
 
 **Props:**
-- `type`: `string` - Icon type (e.g., 'search', 'plus', 'edit', 'delete', 'sort')
+- `type`: `string` - Icon type (e.g., 'search', 'plus', 'edit', 'delete', 'sort', 'meatballs')
 - `size`: `'sm' | 'md' | 'lg'`
+
+**Available Icons:**
+- UI actions: `search`, `plus`, `edit`, `delete`, `close`
+- Sorting: `sort`, `sort-asc`, `sort-desc`
+- Charts: `pie-chart`, `bar-chart`
+- Actions: `refresh`, `filter`, `meatballs` (three-dot menu)
 
 **Usage:**
 ```vue
 <SapIcon type="search" size="md" />
+<SapIcon type="meatballs" size="md" />
 ```
 
 ---
@@ -636,7 +693,7 @@ Table row with state indicator and actions.
 ---
 
 #### **AccountModal.vue**
-Create/Edit account modal dialog.
+Create/Edit account modal dialog with CRM navigation menu.
 
 **Props:**
 - `isOpen`: `boolean`
@@ -646,6 +703,17 @@ Create/Edit account modal dialog.
 **Emits:**
 - `close` - When modal is closed
 - `save` - When form is submitted with account data
+
+**Features:**
+- Create and edit forms with validation
+- Dropdown fields for Industry, Contact Person, Owner, Country
+- **Meatballs menu** (⋯) in edit mode with CRM navigation actions:
+  - Open Account Details in CRM
+  - Create Opportunity for account
+  - Create Quote for account
+  - Create Case for account
+- Click-outside to close menu
+- Menu resets when modal opens/closes
 
 **Usage:**
 ```vue

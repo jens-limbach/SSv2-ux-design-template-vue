@@ -39,7 +39,22 @@ The Vue.js frontend has been successfully integrated with the SAP Sales and Serv
   - Owner dropdown (fetches from API)
   - Contact Person dropdown (fetches from API)
   - Industry dropdown (fetches from API)
+  - **Meatballs menu** (three-dot action menu) in modal header for CRM navigation
+  - Four navigation actions: Open Account Details, Create Opportunity, Create Quote, Create Case
+  - Click-outside detection to close menu automatically
+  - Menu state reset when modal opens/closes
 - **Changed**: Form now uses UUIDs internally, displays formatted names
+- **Navigation Functions**:
+  - `openAccountDetails()` - Opens account in CRM details view (mdaccount routing key)
+  - `createOpportunity()` - Creates opportunity with quickcreate view (guidedselling routing key)
+  - `createQuote()` - Creates quote with quickcreate view (sales-quote routing key)
+  - `createCase()` - Creates support case with account ID in attributes (case routing key)
+- **UX Features**:
+  - Menu only visible in edit mode (when account exists)
+  - Menu styled with SAP Fiori secondary button design
+  - Menu items styled like table headers (bold, gray text)
+  - Light gray hover effect
+  - Smooth transitions (0.2s opacity/transform)
 
 #### SapTable.vue & SapTableRow.vue
 - **Removed**: Email, Phone, Revenue columns
@@ -96,6 +111,28 @@ The Vue.js frontend has been successfully integrated with the SAP Sales and Serv
 - SapPriorityToggle.vue - Color-coded priority buttons (High/Medium/Low)
 - SapRadioGroup.vue - Radio button group with SAP styling
 - SapSwitch.vue - Toggle switch for boolean values
+
+**SapIcon.vue** (Updated)
+- Added `meatballs` icon type (three horizontal dots: ⋯)
+- SVG path for action menu icon
+- Used in AccountModal for navigation menu button
+- Fully documented in CSS Style Guide with usage examples
+
+**CSS Additions (sap-crm-components.css)**
+- `.sap-crm-modal-menu__button-wrapper` - Relative positioning container for menu dropdown
+- `.sap-crm-modal-menu` - Dropdown menu styling with white background, shadow, and positioning
+  - Position: absolute, anchored to top-right of button
+  - Background: solid white (#ffffff)
+  - Border-radius: 0.25rem
+  - Box-shadow: 0 4px 12px rgba(0,0,0,0.15)
+  - Transitions: opacity and transform (0.2s)
+  - z-index: 1000
+- `.sap-crm-modal-menu__item` - Menu item styling
+  - Bold font (700 weight) matching table headers
+  - Color: var(--color-neutral-4) for consistency
+  - Hover: light gray background (var(--color-neutral-1))
+  - Active: slightly darker gray (var(--color-neutral-2))
+  - No color change on hover (maintains neutral-4)
 
 ### 3. Backend (server/)
 
