@@ -10,7 +10,7 @@ This project serves as a **reference implementation** for developers building mo
 - ✅ **Secure Authentication** - Express proxy server with Basic Auth (credentials never exposed to client)
 - ✅ **Modern Vue 3** with Composition API and TypeScript
 - ✅ **SAP Fiori Design System** (Sales & Service Cloud V2 variation) - [Complete CSS Style Guide](docs/CSS-STYLE-GUIDE.md) 🎨
-- ✅ **Interactive CSS Showcase** - [Live component examples](/css-showcase.html) with copy-able code snippets 🚀
+- ✅ **Interactive CSS Showcase** - [Live component examples](/public/css-showcase.html) with copy-able code snippets 🚀
 - ✅ **Reactive State Management** with Pinia
 - ✅ **Full CRUD Operations** - Create, Read, Update, Delete with optimistic locking (If-Match)
 - ✅ **Server-Side Pagination** - Efficient data loading with OData $top/$skip/$count
