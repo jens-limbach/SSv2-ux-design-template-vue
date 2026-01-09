@@ -23,7 +23,7 @@ This project serves as a **reference implementation** for developers building mo
 
 **NEW!** Explore the complete SAP Sales and Service Cloud V2 design system with live, interactive examples:
 
-👉 **[Open CSS Showcase Page](/css-showcase.html)** 👈
+👉 **[Open CSS Showcase Page](/public/css-showcase.html)** 👈
 
 The showcase includes:
 - 🎨 **Color System** - Complete color palette with swatches and variable names
