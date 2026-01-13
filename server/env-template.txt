@@ -1,0 +1,11 @@
+# Server Environment Configuration Template
+# Copy this to server/.env and update with your values (DO NOT COMMIT .env file)
+
+# SAP CRM API Configuration
+CRM_BASE_URL=https://your-tenant.crm.cloud.sap
+CRM_USERNAME=your-username
+CRM_PASSWORD=your-password
+
+# Server Configuration
+PORT=3000
+NODE_ENV=development

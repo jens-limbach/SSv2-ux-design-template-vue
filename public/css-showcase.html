@@ -1,0 +1,1692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SAP Sales and Service Cloud V2 - CSS Design System Showcase</title>
+  
+  <!-- Import CSS files in correct order -->
+  <link rel="stylesheet" href="/assets/css/sap-crm-colors.css">
+  <link rel="stylesheet" href="/assets/css/sap-crm-global.css">
+  <link rel="stylesheet" href="/assets/css/sap-crm-components.css">
+  
+  <style>
+    /* Ensure page can scroll */
+    html, body {
+      overflow: auto !important;
+      height: auto !important;
+    }
+    
+    /* Showcase-specific styles */
+    .showcase-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    
+    .showcase-header {
+      background: linear-gradient(135deg, var(--color-primary-4) 0%, var(--color-primary-6) 100%);
+      color: white;
+      padding: 3rem 2rem;
+      margin: -2rem -2rem 2rem -2rem;
+      border-radius: 0 0 1rem 1rem;
+    }
+    
+    .showcase-header h1 {
+      margin: 0 0 1rem 0;
+      font-size: 2.5rem;
+      font-weight: 700;
+    }
+    
+    .showcase-header p {
+      margin: 0;
+      font-size: 1.125rem;
+      opacity: 0.95;
+    }
+    
+    .showcase-nav {
+      background: var(--color-background-white);
+      padding: 1rem;
+      margin-bottom: 2rem;
+      border-radius: 0.5rem;
+      box-shadow: 0 2px 4px var(--color-shadow-1);
+      position: sticky;
+      top: 1rem;
+      z-index: 100;
+    }
+    
+    .showcase-nav h3 {
+      margin: 0 0 0.75rem 0;
+      font-size: 0.875rem;
+      text-transform: uppercase;
+      color: var(--color-neutral-4);
+      font-weight: 600;
+    }
+    
+    .showcase-nav-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    
+    .showcase-nav-links a {
+      color: var(--color-primary-4);
+      text-decoration: none;
+      padding: 0.375rem 0.75rem;
+      border-radius: 0.25rem;
+      font-size: 0.875rem;
+      transition: background-color 0.1s;
+    }
+    
+    .showcase-nav-links a:hover {
+      background-color: var(--color-primary-1);
+    }
+    
+    .showcase-section {
+      background: var(--color-background-white);
+      padding: 2rem;
+      margin-bottom: 2rem;
+      border-radius: 0.5rem;
+      box-shadow: 0 2px 4px var(--color-shadow-1);
+    }
+    
+    .showcase-section h2 {
+      margin: 0 0 1.5rem 0;
+      font-size: 1.75rem;
+      color: var(--color-neutral-7);
+      border-bottom: 2px solid var(--color-primary-4);
+      padding-bottom: 0.75rem;
+    }
+    
+    .showcase-section h3 {
+      margin: 2rem 0 1rem 0;
+      font-size: 1.25rem;
+      color: var(--color-neutral-6);
+    }
+    
+    .showcase-example {
+      margin-bottom: 2.5rem;
+    }
+    
+    .showcase-example-title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--color-neutral-6);
+      margin-bottom: 1rem;
+    }
+    
+    .showcase-demo {
+      background: var(--color-background-faded);
+      padding: 2rem;
+      border-radius: 0.5rem;
+      border: 1px solid var(--color-neutral-2);
+      margin-bottom: 1rem;
+    }
+    
+    .showcase-code {
+      position: relative;
+      background: #1e1e1e;
+      color: #d4d4d4;
+      padding: 1.5rem;
+      border-radius: 0.5rem;
+      overflow-x: auto;
+      font-family: 'Courier New', monospace;
+      font-size: 0.875rem;
+      line-height: 1.5;
+    }
+    
+    .showcase-code code {
+      display: block;
+      white-space: pre;
+    }
+    
+    .copy-btn {
+      position: absolute;
+      top: 0.5rem;
+      right: 0.5rem;
+      background: var(--color-neutral-6);
+      color: white;
+      border: none;
+      padding: 0.375rem 0.75rem;
+      border-radius: 0.25rem;
+      cursor: pointer;
+      font-size: 0.75rem;
+      transition: background-color 0.1s;
+    }
+    
+    .copy-btn:hover {
+      background: var(--color-neutral-7);
+    }
+    
+    .copy-btn.copied {
+      background: var(--color-accent-green-4);
+    }
+    
+    .color-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    
+    .color-swatch {
+      border: 1px solid var(--color-neutral-2);
+      border-radius: 0.5rem;
+      overflow: hidden;
+    }
+    
+    .color-swatch-color {
+      height: 80px;
+      width: 100%;
+    }
+    
+    .color-swatch-info {
+      padding: 0.75rem;
+      background: white;
+    }
+    
+    .color-swatch-name {
+      font-weight: 600;
+      font-size: 0.875rem;
+      margin-bottom: 0.25rem;
+      color: var(--color-neutral-7);
+    }
+    
+    .color-swatch-value {
+      font-family: monospace;
+      font-size: 0.75rem;
+      color: var(--color-neutral-4);
+    }
+    
+    .button-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      align-items: center;
+    }
+    
+    .note {
+      background: var(--color-primary-1);
+      border-left: 4px solid var(--color-primary-4);
+      padding: 1rem;
+      margin: 1rem 0;
+      border-radius: 0.25rem;
+    }
+    
+    .note strong {
+      color: var(--color-primary-6);
+    }
+    
+    /* Fix for modal backdrop blocking scrolling */
+    .modal-backdrop:not(.active) {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="showcase-container">
+    <!-- Header -->
+    <header class="showcase-header">
+      <h1>SAP Sales and Service Cloud V2</h1>
+      <p>CSS Design System Showcase - Framework-Agnostic Component Reference</p>
+    </header>
+    
+    <!-- Navigation -->
+    <nav class="showcase-nav">
+      <h3>Quick Navigation</h3>
+      <div class="showcase-nav-links">
+        <a href="#colors">Colors</a>
+        <a href="#typography">Typography</a>
+        <a href="#buttons">Buttons</a>
+        <a href="#inputs">Inputs</a>
+        <a href="#form-controls">Form Controls</a>
+        <a href="#tables">Tables</a>
+        <a href="#badges">Badges</a>
+        <a href="#filters">Filters & Pills</a>
+        <a href="#icons">Icons</a>
+        <a href="#pagination">Pagination</a>
+        <a href="#modals">Modals</a>
+      </div>
+    </nav>
+    
+    <!-- Introduction -->
+    <section class="showcase-section">
+      <h2>Introduction</h2>
+      <p style="margin-bottom: 1rem;">This showcase demonstrates a set of the available CSS components from the SAP Sales and Service Cloud V2 design system. All examples use pure HTML and CSS - no framework dependencies. Please note, this is no official design guide but just some help from a developer to developers.</p>
+      
+      <div class="note">
+        <strong>CSS Import Order:</strong> Always import CSS files in this order for proper styling:
+        <ol style="margin: 0.5rem 0 0 1.5rem;">
+          <li><code>sap-crm-colors.css</code> - Color variables</li>
+          <li><code>sap-crm-global.css</code> - Global styles and typography</li>
+          <li><code>sap-crm-components.css</code> - Component styles</li>
+        </ol>
+      </div>
+    </section>
+    
+    <!-- COLOR SYSTEM -->
+    <section id="colors" class="showcase-section">
+      <h2>Color System</h2>
+      <p style="margin-bottom: 2rem;">All colors are defined as CSS custom properties. Always use <code>var(--color-name)</code> instead of hardcoding values.</p>
+      
+      <h3>Primary Colors (SAP Blue)</h3>
+      <div class="color-grid">
+        <div class="color-swatch">
+          <div class="color-swatch-color" style="background: var(--color-primary-1);"></div>
+          <div class="color-swatch-info">
+            <div class="color-swatch-name">Primary 1 (Lightest)</div>
+            <div class="color-swatch-value">--color-primary-1</div>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-swatch-color" style="background: var(--color-primary-2);"></div>
+          <div class="color-swatch-info">
+            <div class="color-swatch-name">Primary 2</div>
+            <div class="color-swatch-value">--color-primary-2</div>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-swatch-color" style="background: var(--color-primary-3);"></div>
+          <div class="color-swatch-info">
+            <div class="color-swatch-name">Primary 3</div>
+            <div class="color-swatch-value">--color-primary-3</div>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-swatch-color" style="background: var(--color-primary-4);"></div>
+          <div class="color-swatch-info">
+            <div class="color-swatch-name">Primary 4 (SAP Blue)</div>
+            <div class="color-swatch-value">--color-primary-4</div>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-swatch-color" style="background: var(--color-primary-5);"></div>
+          <div class="color-swatch-info">
+            <div class="color-swatch-name">Primary 5</div>
+            <div class="color-swatch-value">--color-primary-5</div>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-swatch-color" style="background: var(--color-primary-6);"></div>
+          <div class="color-swatch-info">
+            <div class="color-swatch-name">Primary 6 (Darkest)</div>
+            <div class="color-swatch-value">--color-primary-6</div>
+          </div>
+        </div>
+      </div>
+      
+      <h3>Neutral Colors (Grays)</h3>
+      <div class="color-grid">
+        <div class="color-swatch">
+          <div class="color-swatch-color" style="background: var(--color-neutral-1);"></div>
+          <div class="color-swatch-info">
+            <div class="color-swatch-name">Neutral 1 (Lightest)</div>
+            <div class="color-swatch-value">--color-neutral-1</div>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-swatch-color" style="background: var(--color-neutral-2);"></div>
+          <div class="color-swatch-info">
+            <div class="color-swatch-name">Neutral 2</div>
+            <div class="color-swatch-value">--color-neutral-2</div>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-swatch-color" style="background: var(--color-neutral-3);"></div>
+          <div class="color-swatch-info">
+            <div class="color-swatch-name">Neutral 3</div>
+            <div class="color-swatch-value">--color-neutral-3</div>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-swatch-color" style="background: var(--color-neutral-4);"></div>
+          <div class="color-swatch-info">
+            <div class="color-swatch-name">Neutral 4</div>
+            <div class="color-swatch-value">--color-neutral-4</div>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-swatch-color" style="background: var(--color-neutral-5);"></div>
+          <div class="color-swatch-info">
+            <div class="color-swatch-name">Neutral 5</div>
+            <div class="color-swatch-value">--color-neutral-5</div>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-swatch-color" style="background: var(--color-neutral-6);"></div>
+          <div class="color-swatch-info">
+            <div class="color-swatch-name">Neutral 6</div>
+            <div class="color-swatch-value">--color-neutral-6</div>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-swatch-color" style="background: var(--color-neutral-7);"></div>
+          <div class="color-swatch-info">
+            <div class="color-swatch-name">Neutral 7 (Darkest)</div>
+            <div class="color-swatch-value">--color-neutral-7</div>
+          </div>
+        </div>
+      </div>
+      
+      <h3>Semantic Colors</h3>
+      <div class="color-grid">
+        <div class="color-swatch">
+          <div class="color-swatch-color" style="background: var(--color-accent-green-4);"></div>
+          <div class="color-swatch-info">
+            <div class="color-swatch-name">Success (Green)</div>
+            <div class="color-swatch-value">--color-accent-green-4</div>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-swatch-color" style="background: var(--color-accent-red-4);"></div>
+          <div class="color-swatch-info">
+            <div class="color-swatch-name">Error (Red)</div>
+            <div class="color-swatch-value">--color-accent-red-4</div>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-swatch-color" style="background: var(--color-accent-yellow-3);"></div>
+          <div class="color-swatch-info">
+            <div class="color-swatch-name">Warning (Yellow)</div>
+            <div class="color-swatch-value">--color-accent-yellow-3</div>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-swatch-color" style="background: var(--color-accent-orange-4);"></div>
+          <div class="color-swatch-info">
+            <div class="color-swatch-name">Caution (Orange)</div>
+            <div class="color-swatch-value">--color-accent-orange-4</div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- TYPOGRAPHY -->
+    <section id="typography" class="showcase-section">
+      <h2>Typography</h2>
+      
+      <div class="showcase-example">
+        <div class="showcase-example-title">Font Family & Headings</div>
+        <div class="showcase-demo">
+          <h1>Heading 1 - SAP Font "72"</h1>
+          <h2>Heading 2 - SAP Font "72"</h2>
+          <h3>Heading 3 - SAP Font "72"</h3>
+          <p>Body text uses font family "72", Helvetica, -apple-system, Arial, sans-serif. The default font size is 0.875rem (14px).</p>
+        </div>
+        <div class="showcase-code">
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          <code>&lt;h1&gt;Heading 1 - SAP Font "72"&lt;/h1&gt;
+&lt;h2&gt;Heading 2 - SAP Font "72"&lt;/h2&gt;
+&lt;h3&gt;Heading 3 - SAP Font "72"&lt;/h3&gt;
+&lt;p&gt;Body text uses font family "72"...&lt;/p&gt;
+
+&lt;!-- Font stack is defined globally in sap-crm-global.css --&gt;
+&lt;!-- font-family: "72", Helvetica, -apple-system, Arial, sans-serif; --&gt;</code>
+        </div>
+      </div>
+    </section>
+    
+    <!-- BUTTONS -->
+    <section id="buttons" class="showcase-section">
+      <h2>Buttons</h2>
+      <p style="margin-bottom: 2rem;">Base class: <code>.sap-crm-btn</code> with variants for size and style.</p>
+      
+      <div class="showcase-example">
+        <div class="showcase-example-title">Button Variants</div>
+        <div class="showcase-demo">
+          <div class="button-grid">
+            <button class="sap-crm-btn sap-crm-btn--primary sap-crm-btn--md">Primary</button>
+            <button class="sap-crm-btn sap-crm-btn--secondary sap-crm-btn--md">Secondary</button>
+            <button class="sap-crm-btn sap-crm-btn--neutrallight sap-crm-btn--md">Neutral Light</button>
+            <button class="sap-crm-btn sap-crm-btn--negative sap-crm-btn--md">Negative</button>
+            <button class="sap-crm-btn sap-crm-btn--primary sap-crm-btn--md" disabled>Disabled</button>
+          </div>
+        </div>
+        <div class="showcase-code">
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          <code>&lt;button class="sap-crm-btn sap-crm-btn--primary sap-crm-btn--md"&gt;Primary&lt;/button&gt;
+&lt;button class="sap-crm-btn sap-crm-btn--secondary sap-crm-btn--md"&gt;Secondary&lt;/button&gt;
+&lt;button class="sap-crm-btn sap-crm-btn--neutrallight sap-crm-btn--md"&gt;Neutral Light&lt;/button&gt;
+&lt;button class="sap-crm-btn sap-crm-btn--negative sap-crm-btn--md"&gt;Negative&lt;/button&gt;
+&lt;button class="sap-crm-btn sap-crm-btn--primary sap-crm-btn--md" disabled&gt;Disabled&lt;/button&gt;
+
+&lt;!-- Variants:
+  - .sap-crm-btn--primary (Blue background, white text)
+  - .sap-crm-btn--secondary (White background, blue border and text)
+  - .sap-crm-btn--neutrallight (Transparent, gray text)
+  - .sap-crm-btn--negative (Red background, for destructive actions)
+--&gt;</code>
+        </div>
+      </div>
+      
+      <div class="showcase-example">
+        <div class="showcase-example-title">Button Sizes</div>
+        <div class="showcase-demo">
+          <div class="button-grid" style="align-items: center;">
+            <button class="sap-crm-btn sap-crm-btn--primary sap-crm-btn--xsm">Extra Small</button>
+            <button class="sap-crm-btn sap-crm-btn--primary sap-crm-btn--sm">Small</button>
+            <button class="sap-crm-btn sap-crm-btn--primary sap-crm-btn--md">Medium (Default)</button>
+            <button class="sap-crm-btn sap-crm-btn--primary sap-crm-btn--lg">Large</button>
+          </div>
+        </div>
+        <div class="showcase-code">
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          <code>&lt;button class="sap-crm-btn sap-crm-btn--primary sap-crm-btn--xsm"&gt;Extra Small&lt;/button&gt;
+&lt;button class="sap-crm-btn sap-crm-btn--primary sap-crm-btn--sm"&gt;Small&lt;/button&gt;
+&lt;button class="sap-crm-btn sap-crm-btn--primary sap-crm-btn--md"&gt;Medium (Default)&lt;/button&gt;
+&lt;button class="sap-crm-btn sap-crm-btn--primary sap-crm-btn--lg"&gt;Large&lt;/button&gt;
+
+&lt;!-- Size variants:
+  - .sap-crm-btn--xsm (Extra small - minimal padding)
+  - .sap-crm-btn--sm (Small - 2rem height)
+  - .sap-crm-btn--md (Medium - 2.25rem height) [DEFAULT]
+  - .sap-crm-btn--lg (Large - 2.75rem height)
+--&gt;</code>
+        </div>
+      </div>
+      
+      <div class="showcase-example">
+        <div class="showcase-example-title">Icon-Only Buttons</div>
+        <div class="showcase-demo">
+          <div style="display: flex; gap: 0.75rem; align-items: center;">
+            <!-- Search Button (as used on Accounts page) -->
+            <button class="sap-crm-btn sap-crm-btn--secondary sap-crm-btn--md" style="padding: 0.4375rem; min-width: 2.25rem; width: 2.25rem; height: 2.25rem;" aria-label="Search">
+              <svg class="sap-crm-icon sap-crm-icon--md" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path fill="currentColor" d="M10.8889012,2 C15.7981303,2 19.7778025,5.97969442 19.7778025,10.8889012 C19.7778025,12.9430885 19.0810143,14.8345226 17.9108962,16.3397453 L21.6745829,20.1032474 C22.1084724,20.5371369 22.1084724,21.2406934 21.6745829,21.6745829 C21.2406934,22.1084724 20.5371369,22.1084724 20.1032474,21.6745829 L16.3397453,17.9108962 C14.8345226,19.0810143 12.9430885,19.7778025 10.8889012,19.7778025 C5.97969442,19.7778025 2,15.7981303 2,10.8889012 C2,5.97969442 5.97969442,2 10.8889012,2 Z M10.8889012,4.22222531 C7.20699612,4.22222531 4.22222531,7.20699612 4.22222531,10.8889012 C4.22222531,14.5707952 7.20699612,17.5555772 10.8889012,17.5555772 C14.5707952,17.5555772 17.5555772,14.5707952 17.5555772,10.8889012 C17.5555772,7.20699612 14.5707952,4.22222531 10.8889012,4.22222531 Z"/>
+              </svg>
+            </button>
+            
+            <!-- Analytics Button (as used on Accounts page) -->
+            <button class="sap-crm-btn sap-crm-btn--secondary sap-crm-btn--md" style="padding: 0.4375rem; min-width: 2.25rem; width: 2.25rem; height: 2.25rem;" aria-label="Analytics">
+              <svg class="sap-crm-icon sap-crm-icon--md" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path fill="currentColor" d="M12 2a1 1 0 011 1v18a1 1 0 11-2 0V3a1 1 0 011-1z M20.94 8.649a1 1 0 01-.585 1.287l-8.004 3a1 1 0 01-.702-1.872l8.004-3a1 1 0 011.287.585z M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12zm10-8a8 8 0 100 16 8 8 0 000-16z"/>
+              </svg>
+            </button>
+            
+            <!-- Add Button (as used on Accounts page) -->
+            <button class="sap-crm-btn sap-crm-btn--secondary sap-crm-btn--md" style="padding: 0.4375rem; min-width: 2.25rem; width: 2.25rem; height: 2.25rem;" aria-label="Add new account">
+              <svg class="sap-crm-icon sap-crm-icon--md" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path fill="currentColor" d="M12,4 C12.5523,4 13,4.51168 13,5.14285714 L13,11 L18.8571429,11 C19.4883429,11 20,11.4477 20,12 C20,12.5523 19.4883429,13 18.8571429,13 L13,13 L13,18.8571429 C13,19.4883429 12.5523,20 12,20 C11.4477,20 11,19.4883429 11,18.8571429 L11,13 L5.14285714,13 C4.51168,13 4,12.5523 4,12 C4,11.4477 4.51168,11 5.14285714,11 L11,11 L11,5.14285714 C11,4.51168 11.4477,4 12,4 Z"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div class="showcase-code">
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          <code>&lt;!-- Icon-only buttons as used on Accounts page --&gt;
+&lt;button 
+  class="sap-crm-btn sap-crm-btn--secondary sap-crm-btn--md" 
+  style="padding: 0.4375rem; min-width: 2.25rem; width: 2.25rem; height: 2.25rem;"
+  aria-label="Search"&gt;
+  &lt;svg class="sap-crm-icon sap-crm-icon--md" viewBox="0 0 24 24"&gt;
+    &lt;path fill="currentColor" d="M10.8889012,2 C15.7981303,2..."/&gt;
+  &lt;/svg&gt;
+&lt;/button&gt;
+
+&lt;!-- Key styling for icon-only buttons:
+  - Use .sap-crm-btn--secondary variant
+  - Set equal width and height for square shape
+  - Reduce padding to fit icon only
+  - Use .sap-crm-icon--md (20px) icon size
+  - Always include aria-label for accessibility
+--&gt;</code>
+        </div>
+      </div>
+      
+      <div class="showcase-example">
+        <div class="showcase-example-title">Toggle Buttons (Priority Colors)</div>
+        <div class="showcase-demo">
+          <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
+            <button class="sap-crm-btn sap-crm-btn--toggle sap-crm-btn--toggle--red sap-crm-btn--sm">High</button>
+            <button class="sap-crm-btn sap-crm-btn--toggle sap-crm-btn--toggle--yellow sap-crm-btn--sm">Medium</button>
+            <button class="sap-crm-btn sap-crm-btn--toggle sap-crm-btn--toggle--blue sap-crm-btn--sm">Low</button>
+          </div>
+          <div style="display: flex; gap: 0.5rem;">
+            <button class="sap-crm-btn sap-crm-btn--toggle sap-crm-btn--toggle--primary sap-crm-btn--sm">Primary</button>
+            <button class="sap-crm-btn sap-crm-btn--toggle sap-crm-btn--toggle--orange sap-crm-btn--sm">Orange</button>
+          </div>
+        </div>
+        <div class="showcase-code">
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          <code>&lt;button class="sap-crm-btn sap-crm-btn--toggle sap-crm-btn--toggle--red sap-crm-btn--sm"&gt;High&lt;/button&gt;
+&lt;button class="sap-crm-btn sap-crm-btn--toggle sap-crm-btn--toggle--yellow sap-crm-btn--sm"&gt;Medium&lt;/button&gt;
+&lt;button class="sap-crm-btn sap-crm-btn--toggle sap-crm-btn--toggle--blue sap-crm-btn--sm"&gt;Low&lt;/button&gt;
+
+&lt;!-- Toggle button colors:
+  - .sap-crm-btn--toggle--red (High priority - red)
+  - .sap-crm-btn--toggle--yellow (Medium priority - yellow)
+  - .sap-crm-btn--toggle--blue (Low priority - blue)
+  - .sap-crm-btn--toggle--primary (Primary blue)
+  - .sap-crm-btn--toggle--orange (Orange)
+  
+  Use opacity or selected state to indicate active/inactive toggles
+--&gt;</code>
+        </div>
+      </div>
+    </section>
+    
+    <!-- INPUTS -->
+    <section id="inputs" class="showcase-section">
+      <h2>Input Fields</h2>
+      <p style="margin-bottom: 2rem;">Base class: <code>.sap-crm-input</code> wraps input elements.</p>
+      
+      <div class="showcase-example">
+        <div class="showcase-example-title">Text Input</div>
+        <div class="showcase-demo">
+          <div class="sap-crm-input" style="max-width: 400px;">
+            <input type="text" placeholder="Enter text...">
+          </div>
+        </div>
+        <div class="showcase-code">
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          <code>&lt;div class="sap-crm-input"&gt;
+  &lt;input type="text" placeholder="Enter text..."&gt;
+&lt;/div&gt;
+
+&lt;!-- The wrapper provides consistent styling and focus states --&gt;</code>
+        </div>
+      </div>
+      
+      <div class="showcase-example">
+        <div class="showcase-example-title">Input States</div>
+        <div class="showcase-demo" style="display: flex; flex-direction: column; gap: 1rem; max-width: 400px;">
+          <div class="sap-crm-input">
+            <input type="text" placeholder="Normal state">
+          </div>
+          <div class="sap-crm-input sap-crm-input--error">
+            <input type="text" value="Invalid input" placeholder="Error state">
+          </div>
+          <div class="sap-crm-input">
+            <input type="text" placeholder="Disabled state" disabled>
+          </div>
+        </div>
+        <div class="showcase-code">
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          <code>&lt;!-- Normal --&gt;
+&lt;div class="sap-crm-input"&gt;
+  &lt;input type="text" placeholder="Normal state"&gt;
+&lt;/div&gt;
+
+&lt;!-- Error state --&gt;
+&lt;div class="sap-crm-input sap-crm-input--error"&gt;
+  &lt;input type="text" value="Invalid input"&gt;
+&lt;/div&gt;
+
+&lt;!-- Disabled state --&gt;
+&lt;div class="sap-crm-input"&gt;
+  &lt;input type="text" disabled&gt;
+&lt;/div&gt;</code>
+        </div>
+      </div>
+      
+      <div class="showcase-example">
+        <div class="showcase-example-title">Input Types</div>
+        <div class="showcase-demo" style="display: flex; flex-direction: column; gap: 1rem; max-width: 400px;">
+          <div class="sap-crm-input">
+            <input type="email" placeholder="email@example.com">
+          </div>
+          <div class="sap-crm-input">
+            <input type="url" placeholder="https://www.example.com">
+          </div>
+          <div class="sap-crm-input">
+            <input type="number" placeholder="Enter number">
+          </div>
+        </div>
+        <div class="showcase-code">
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          <code>&lt;div class="sap-crm-input"&gt;
+  &lt;input type="email" placeholder="email@example.com"&gt;
+&lt;/div&gt;
+
+&lt;div class="sap-crm-input"&gt;
+  &lt;input type="url" placeholder="https://www.example.com"&gt;
+&lt;/div&gt;
+
+&lt;div class="sap-crm-input"&gt;
+  &lt;input type="number" placeholder="Enter number"&gt;
+&lt;/div&gt;</code>
+        </div>
+      </div>
+      
+      <div class="showcase-example">
+        <div class="showcase-example-title">Select Dropdown</div>
+        <div class="showcase-demo" style="max-width: 400px;">
+          <div class="sap-crm-input">
+            <select>
+              <option value="">Select an option...</option>
+              <option value="1">Option 1</option>
+              <option value="2">Option 2</option>
+              <option value="3">Option 3</option>
+            </select>
+          </div>
+        </div>
+        <div class="showcase-code">
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          <code>&lt;div class="sap-crm-input"&gt;
+  &lt;select&gt;
+    &lt;option value=""&gt;Select an option...&lt;/option&gt;
+    &lt;option value="1"&gt;Option 1&lt;/option&gt;
+    &lt;option value="2"&gt;Option 2&lt;/option&gt;
+  &lt;/select&gt;
+&lt;/div&gt;
+
+&lt;!-- Dropdown arrow is automatically styled --&gt;</code>
+        </div>
+      </div>
+      
+      <div class="showcase-example">
+        <div class="showcase-example-title">Textarea</div>
+        <div class="showcase-demo" style="max-width: 400px;">
+          <div class="sap-crm-input sap-crm-input--textarea">
+            <textarea rows="4" placeholder="Enter multiple lines of text..."></textarea>
+          </div>
+        </div>
+        <div class="showcase-code">
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          <code>&lt;div class="sap-crm-input sap-crm-input--textarea"&gt;
+  &lt;textarea rows="4" placeholder="Enter text..."&gt;&lt;/textarea&gt;
+&lt;/div&gt;
+
+&lt;!-- Use .sap-crm-input--textarea for textareas --&gt;</code>
+        </div>
+      </div>
+    </section>
+    
+    <!-- FORM CONTROLS -->
+    <section id="form-controls" class="showcase-section">
+      <h2>Form Controls</h2>
+      <p style="margin-bottom: 2rem;">Custom-styled checkboxes, radio buttons, and toggle switches.</p>
+      
+      <div class="showcase-example">
+        <div class="showcase-example-title">Checkboxes</div>
+        <div class="showcase-demo">
+          <div style="display: flex; flex-direction: column; gap: 1rem;">
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+              <div class="sap-crm-icontrol sap-crm-icontrol__checkbox">
+                <input type="checkbox" id="check1" checked>
+                <div class="sap-crm-icontrol__wrap sap-crm-icontrol__wrap--checkbox">
+                  <svg class="sap-crm-icontrol__icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path fill="currentColor" d="M19.5994902,5.34041307 C20.2170184,5.8819097 20.2806349,6.81152807 19.7391382,7.42905628 L10.7391382,17.4290563 C10.5139665,17.6858268 10.1919992,17.8346336 9.85268695,17.8411677 C9.51337469,17.8477017 9.1859682,17.7113658 8.95107883,17.4630809 L4.45107883,12.7130809 C3.8836203,12.1170088 3.90521957,11.1863556 4.50129172,10.618897 C5.09736387,10.0514385 6.02801709,10.0730377 6.59547558,10.6691099 L9.79486621,14.0365939 L17.7608618,5.07094372 C18.3023585,4.45341551 19.2319768,4.38979901 19.8495051,4.93129566 L19.5994902,5.34041307 Z"/>
+                  </svg>
+                </div>
+              </div>
+              <label for="check1" style="margin: 0; cursor: pointer;">Checked</label>
+            </div>
+            
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+              <div class="sap-crm-icontrol sap-crm-icontrol__checkbox">
+                <input type="checkbox" id="check2">
+                <div class="sap-crm-icontrol__wrap sap-crm-icontrol__wrap--checkbox">
+                  <svg class="sap-crm-icontrol__icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path fill="currentColor" d="M19.5994902,5.34041307 C20.2170184,5.8819097 20.2806349,6.81152807 19.7391382,7.42905628 L10.7391382,17.4290563 C10.5139665,17.6858268 10.1919992,17.8346336 9.85268695,17.8411677 C9.51337469,17.8477017 9.1859682,17.7113658 8.95107883,17.4630809 L4.45107883,12.7130809 C3.8836203,12.1170088 3.90521957,11.1863556 4.50129172,10.618897 C5.09736387,10.0514385 6.02801709,10.0730377 6.59547558,10.6691099 L9.79486621,14.0365939 L17.7608618,5.07094372 C18.3023585,4.45341551 19.2319768,4.38979901 19.8495051,4.93129566 L19.5994902,5.34041307 Z"/>
+                  </svg>
+                </div>
+              </div>
+              <label for="check2" style="margin: 0; cursor: pointer;">Unchecked</label>
+            </div>
+            
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+              <div class="sap-crm-icontrol sap-crm-icontrol__checkbox sap-crm-icontrol--disabled">
+                <input type="checkbox" id="check3" disabled>
+                <div class="sap-crm-icontrol__wrap sap-crm-icontrol__wrap--checkbox">
+                  <svg class="sap-crm-icontrol__icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path fill="currentColor" d="M19.5994902,5.34041307 C20.2170184,5.8819097 20.2806349,6.81152807 19.7391382,7.42905628 L10.7391382,17.4290563 C10.5139665,17.6858268 10.1919992,17.8346336 9.85268695,17.8411677 C9.51337469,17.8477017 9.1859682,17.7113658 8.95107883,17.4630809 L4.45107883,12.7130809 C3.8836203,12.1170088 3.90521957,11.1863556 4.50129172,10.618897 C5.09736387,10.0514385 6.02801709,10.0730377 6.59547558,10.6691099 L9.79486621,14.0365939 L17.7608618,5.07094372 C18.3023585,4.45341551 19.2319768,4.38979901 19.8495051,4.93129566 L19.5994902,5.34041307 Z"/>
+                  </svg>
+                </div>
+              </div>
+              <label for="check3" style="margin: 0; opacity: 0.5; cursor: not-allowed;">Disabled</label>
+            </div>
+          </div>
+        </div>
+        <div class="showcase-code">
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          <code>&lt;div class="sap-crm-icontrol sap-crm-icontrol__checkbox"&gt;
+  &lt;input type="checkbox" id="check1" checked&gt;
+  &lt;div class="sap-crm-icontrol__wrap sap-crm-icontrol__wrap--checkbox"&gt;
+    &lt;svg class="sap-crm-icontrol__icon" viewBox="0 0 24 24"&gt;
+      &lt;path fill="currentColor" d="M19.5994902..."/&gt;
+    &lt;/svg&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;label for="check1"&gt;Label&lt;/label&gt;
+
+&lt;!-- The input is hidden, the wrapper provides the visual element --&gt;
+&lt;!-- Checkmark SVG is the standard SAP checkmark icon --&gt;</code>
+        </div>
+      </div>
+      
+      <div class="showcase-example">
+        <div class="showcase-example-title">Radio Buttons</div>
+        <div class="showcase-demo">
+          <div style="display: flex; gap: 1.5rem;">
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+              <div class="sap-crm-icontrol sap-crm-icontrol__radio">
+                <input type="radio" name="radioGroup" id="radio1" value="1" checked>
+                <div class="sap-crm-icontrol__wrap sap-crm-icontrol__wrap--radio"></div>
+              </div>
+              <label for="radio1" style="margin: 0; cursor: pointer;">Option 1</label>
+            </div>
+            
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+              <div class="sap-crm-icontrol sap-crm-icontrol__radio">
+                <input type="radio" name="radioGroup" id="radio2" value="2">
+                <div class="sap-crm-icontrol__wrap sap-crm-icontrol__wrap--radio"></div>
+              </div>
+              <label for="radio2" style="margin: 0; cursor: pointer;">Option 2</label>
+            </div>
+            
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+              <div class="sap-crm-icontrol sap-crm-icontrol__radio">
+                <input type="radio" name="radioGroup" id="radio3" value="3">
+                <div class="sap-crm-icontrol__wrap sap-crm-icontrol__wrap--radio"></div>
+              </div>
+              <label for="radio3" style="margin: 0; cursor: pointer;">Option 3</label>
+            </div>
+          </div>
+        </div>
+        <div class="showcase-code">
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          <code>&lt;div class="sap-crm-icontrol sap-crm-icontrol__radio"&gt;
+  &lt;input type="radio" name="radioGroup" id="radio1" value="1" checked&gt;
+  &lt;div class="sap-crm-icontrol__wrap sap-crm-icontrol__wrap--radio"&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;label for="radio1"&gt;Option 1&lt;/label&gt;
+
+&lt;!-- Radio wrapper creates the circular visual element --&gt;
+&lt;!-- Selected state shows inner filled circle --&gt;</code>
+        </div>
+      </div>
+      
+      <div class="showcase-example">
+        <div class="showcase-example-title">Toggle Switch</div>
+        <div class="showcase-demo">
+          <div style="display: flex; flex-direction: column; gap: 1rem;">
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+              <label for="switch1" style="margin: 0; cursor: pointer;">Enabled</label>
+              <div class="sap-crm-icontrol sap-crm-icontrol__switch">
+                <input type="checkbox" id="switch1" checked>
+                <div class="sap-crm-icontrol__wrap sap-crm-icontrol__wrap--switch">
+                  <div class="sap-crm-icontrol__icon"></div>
+                </div>
+              </div>
+            </div>
+            
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+              <label for="switch2" style="margin: 0; cursor: pointer;">Disabled</label>
+              <div class="sap-crm-icontrol sap-crm-icontrol__switch">
+                <input type="checkbox" id="switch2">
+                <div class="sap-crm-icontrol__wrap sap-crm-icontrol__wrap--switch">
+                  <div class="sap-crm-icontrol__icon"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="showcase-code">
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          <code>&lt;div class="sap-crm-icontrol sap-crm-icontrol__switch"&gt;
+  &lt;input type="checkbox" id="switch1" checked&gt;
+  &lt;div class="sap-crm-icontrol__wrap sap-crm-icontrol__wrap--switch"&gt;
+    &lt;div class="sap-crm-icontrol__icon"&gt;&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;label for="switch1"&gt;Enabled&lt;/label&gt;
+
+&lt;!-- Switch animates between off and on states --&gt;
+&lt;!-- Inner icon element slides left/right --&gt;</code>
+        </div>
+      </div>
+    </section>
+    
+    <!-- BADGES -->
+    <section id="badges" class="showcase-section">
+      <h2>Badges</h2>
+      <p style="margin-bottom: 2rem;">Status indicators and labels with semantic colors.</p>
+      
+      <div class="showcase-example">
+        <div class="showcase-example-title">Badge Colors</div>
+        <div class="showcase-demo">
+          <div style="display: flex; flex-wrap: wrap; gap: 0.75rem;">
+            <span class="sap-crm-badge sap-crm-badge--primary">Primary</span>
+            <span class="sap-crm-badge sap-crm-badge--success">Success / Active</span>
+            <span class="sap-crm-badge sap-crm-badge--error">Error / Blocked</span>
+            <span class="sap-crm-badge sap-crm-badge--warning">Warning / Pending</span>
+            <span class="sap-crm-badge sap-crm-badge--info">Information</span>
+            <span class="sap-crm-badge sap-crm-badge--neutral">Neutral / Inactive</span>
+          </div>
+        </div>
+        <div class="showcase-code">
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          <code>&lt;span class="sap-crm-badge sap-crm-badge--primary"&gt;Primary&lt;/span&gt;
+&lt;span class="sap-crm-badge sap-crm-badge--success"&gt;Success / Active&lt;/span&gt;
+&lt;span class="sap-crm-badge sap-crm-badge--error"&gt;Error / Blocked&lt;/span&gt;
+&lt;span class="sap-crm-badge sap-crm-badge--warning"&gt;Warning / Pending&lt;/span&gt;
+&lt;span class="sap-crm-badge sap-crm-badge--info"&gt;Information&lt;/span&gt;
+&lt;span class="sap-crm-badge sap-crm-badge--neutral"&gt;Neutral / Inactive&lt;/span&gt;
+
+&lt;!-- Use semantic colors to convey meaning:
+  - success: Green for active/complete
+  - error: Red for errors/blocked
+  - warning: Yellow/orange for pending/caution
+  - info: Blue for information
+  - neutral: Gray for inactive/default
+--&gt;</code>
+        </div>
+      </div>
+      
+      <div class="showcase-example">
+        <div class="showcase-example-title">Badges in Context</div>
+        <div class="showcase-demo">
+          <div style="display: flex; flex-direction: column; gap: 1rem;">
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+              <span>Account Status:</span>
+              <span class="sap-crm-badge sap-crm-badge--success">Active</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+              <span>Priority Level:</span>
+              <span class="sap-crm-badge sap-crm-badge--error">High</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+              <span>Review Status:</span>
+              <span class="sap-crm-badge sap-crm-badge--warning">Pending</span>
+            </div>
+          </div>
+        </div>
+        <div class="showcase-code">
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          <code>&lt;div style="display: flex; align-items: center; gap: 0.75rem;"&gt;
+  &lt;span&gt;Account Status:&lt;/span&gt;
+  &lt;span class="sap-crm-badge sap-crm-badge--success"&gt;Active&lt;/span&gt;
+&lt;/div&gt;</code>
+        </div>
+      </div>
+    </section>
+    
+    <!-- TABLES -->
+    <section id="tables" class="showcase-section">
+      <h2>Tables</h2>
+      <p style="margin-bottom: 2rem;">Tables with header cells, row states, and status indicators.</p>
+      
+      <div class="showcase-example">
+        <div class="showcase-example-title">Basic Table</div>
+        <div class="showcase-demo">
+          <div class="sap-crm-table--wrapper" style="max-height: 400px;">
+            <table class="sap-crm-table">
+              <thead>
+                <tr class="sap-crm-table__row">
+                  <th class="sap-crm-table__cell sap-crm-table__cell--header">ID</th>
+                  <th class="sap-crm-table__cell sap-crm-table__cell--header">Name</th>
+                  <th class="sap-crm-table__cell sap-crm-table__cell--header">Status</th>
+                  <th class="sap-crm-table__cell sap-crm-table__cell--header">Priority</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="sap-crm-table__row">
+                  <td class="sap-crm-table__cell">ACC-1001</td>
+                  <td class="sap-crm-table__cell">Acme Corporation</td>
+                  <td class="sap-crm-table__cell">
+                    <span class="sap-crm-badge sap-crm-badge--success">Active</span>
+                  </td>
+                  <td class="sap-crm-table__cell">High</td>
+                </tr>
+                <tr class="sap-crm-table__row">
+                  <td class="sap-crm-table__cell">ACC-1002</td>
+                  <td class="sap-crm-table__cell">TechStart Inc</td>
+                  <td class="sap-crm-table__cell">
+                    <span class="sap-crm-badge sap-crm-badge--warning">Review</span>
+                  </td>
+                  <td class="sap-crm-table__cell">Medium</td>
+                </tr>
+                <tr class="sap-crm-table__row sap-crm-table__row--selected">
+                  <td class="sap-crm-table__cell">ACC-1003</td>
+                  <td class="sap-crm-table__cell">Global Solutions Ltd</td>
+                  <td class="sap-crm-table__cell">
+                    <span class="sap-crm-badge sap-crm-badge--success">Active</span>
+                  </td>
+                  <td class="sap-crm-table__cell">Low</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="showcase-code">
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          <code>&lt;div class="sap-crm-table--wrapper"&gt;
+  &lt;table class="sap-crm-table"&gt;
+    &lt;thead&gt;
+      &lt;tr class="sap-crm-table__row"&gt;
+        &lt;th class="sap-crm-table__cell sap-crm-table__cell--header"&gt;ID&lt;/th&gt;
+        &lt;th class="sap-crm-table__cell sap-crm-table__cell--header"&gt;Name&lt;/th&gt;
+        &lt;th class="sap-crm-table__cell sap-crm-table__cell--header"&gt;Status&lt;/th&gt;
+      &lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tbody&gt;
+      &lt;tr class="sap-crm-table__row"&gt;
+        &lt;td class="sap-crm-table__cell"&gt;ACC-1001&lt;/td&gt;
+        &lt;td class="sap-crm-table__cell"&gt;Acme Corporation&lt;/td&gt;
+        &lt;td class="sap-crm-table__cell"&gt;
+          &lt;span class="sap-crm-badge sap-crm-badge--success"&gt;Active&lt;/span&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;!-- Selected row --&gt;
+      &lt;tr class="sap-crm-table__row sap-crm-table__row--selected"&gt;
+        &lt;td class="sap-crm-table__cell"&gt;...&lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/tbody&gt;
+  &lt;/table&gt;
+&lt;/div&gt;
+
+&lt;!-- Wrapper provides scrollable container with consistent styling --&gt;</code>
+        </div>
+      </div>
+      
+      <div class="showcase-example">
+        <div class="showcase-example-title">Table with Row Status Indicators</div>
+        <div class="showcase-demo">
+          <div class="sap-crm-table--wrapper" style="max-height: 400px;">
+            <table class="sap-crm-table">
+              <thead>
+                <tr class="sap-crm-table__row">
+                  <th class="sap-crm-table__cell sap-crm-table__cell--header">Company</th>
+                  <th class="sap-crm-table__cell sap-crm-table__cell--header">Industry</th>
+                  <th class="sap-crm-table__cell sap-crm-table__cell--header">Owner</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="sap-crm-table__row">
+                  <td class="sap-crm-table__cell">
+                    <div class="sap-crm-table__state sap-crm-table__state--success"></div>
+                    Acme Corporation
+                  </td>
+                  <td class="sap-crm-table__cell">Technology</td>
+                  <td class="sap-crm-table__cell">John Smith</td>
+                </tr>
+                <tr class="sap-crm-table__row">
+                  <td class="sap-crm-table__cell">
+                    <div class="sap-crm-table__state sap-crm-table__state--error"></div>
+                    TechStart Inc
+                  </td>
+                  <td class="sap-crm-table__cell">Software</td>
+                  <td class="sap-crm-table__cell">Jane Doe</td>
+                </tr>
+                <tr class="sap-crm-table__row">
+                  <td class="sap-crm-table__cell">
+                    <div class="sap-crm-table__state sap-crm-table__state--caution"></div>
+                    Global Solutions Ltd
+                  </td>
+                  <td class="sap-crm-table__cell">Consulting</td>
+                  <td class="sap-crm-table__cell">Bob Johnson</td>
+                </tr>
+                <tr class="sap-crm-table__row">
+                  <td class="sap-crm-table__cell">
+                    <div class="sap-crm-table__state sap-crm-table__state--info"></div>
+                    Innovation Co
+                  </td>
+                  <td class="sap-crm-table__cell">Research</td>
+                  <td class="sap-crm-table__cell">Alice Williams</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="showcase-code">
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          <code>&lt;tr class="sap-crm-table__row"&gt;
+  &lt;td class="sap-crm-table__cell"&gt;
+    &lt;div class="sap-crm-table__state sap-crm-table__state--success"&gt;&lt;/div&gt;
+    Acme Corporation
+  &lt;/td&gt;
+  &lt;td class="sap-crm-table__cell"&gt;Technology&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;!-- Status indicator colors:
+  - sap-crm-table__state--success (Green - Active/Complete)
+  - sap-crm-table__state--error (Red - Error/Blocked)
+  - sap-crm-table__state--caution (Orange - Warning/Pending)
+  - sap-crm-table__state--info (Blue - Information)
+  
+  The colored bar appears on the left side of the first cell
+--&gt;</code>
+        </div>
+      </div>
+      
+      <div class="showcase-example">
+        <div class="showcase-example-title">Table Cell Alignment</div>
+        <div class="showcase-demo">
+          <div class="sap-crm-table--wrapper">
+            <table class="sap-crm-table">
+              <thead>
+                <tr class="sap-crm-table__row">
+                  <th class="sap-crm-table__cell sap-crm-table__cell--header">Product</th>
+                  <th class="sap-crm-table__cell sap-crm-table__cell--header sap-crm-table__cell--right">Quantity</th>
+                  <th class="sap-crm-table__cell sap-crm-table__cell--header sap-crm-table__cell--right">Price</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="sap-crm-table__row">
+                  <td class="sap-crm-table__cell">Widget A</td>
+                  <td class="sap-crm-table__cell sap-crm-table__cell--right">150</td>
+                  <td class="sap-crm-table__cell sap-crm-table__cell--right">$1,299.00</td>
+                </tr>
+                <tr class="sap-crm-table__row">
+                  <td class="sap-crm-table__cell">Widget B</td>
+                  <td class="sap-crm-table__cell sap-crm-table__cell--right">75</td>
+                  <td class="sap-crm-table__cell sap-crm-table__cell--right">$2,450.00</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="showcase-code">
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          <code>&lt;th class="sap-crm-table__cell sap-crm-table__cell--header sap-crm-table__cell--right"&gt;
+  Price
+&lt;/th&gt;
+
+&lt;td class="sap-crm-table__cell sap-crm-table__cell--right"&gt;
+  $1,299.00
+&lt;/td&gt;
+
+&lt;!-- Use .sap-crm-table__cell--right for right-aligned content --&gt;
+&lt;!-- Commonly used for numbers, currency, and quantities --&gt;</code>
+        </div>
+      </div>
+    </section>
+    
+    <!-- FILTERS & PILLS -->
+    <section id="filters" class="showcase-section">
+      <h2>Filters & Pills</h2>
+      <p style="margin-bottom: 2rem;">Filter dropdowns and active filter pills for data filtering interfaces.</p>
+      
+      <div class="showcase-example">
+        <div class="showcase-example-title">Filter Dropdown Button</div>
+        <div class="showcase-demo">
+          <div class="sap-crm-filter-bar">
+            <div class="sap-crm-filter-bar__filters">
+              <button class="sap-crm-btn sap-crm-btn--neutrallight sap-crm-btn--md" style="position: relative;">
+                <span class="sap-crm-btn--dropdown__text">
+                  Status
+                  <span class="sap-crm-filter-count">(2)</span>
+                </span>
+                <div class="sap-crm-icon sap-crm-icon--md sap-crm-btn__icon sap-crm-btn__icon--right">
+                  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path fill="currentColor" d="M6.35146815,8.75146815 C6.82010434,8.28284395 7.57989666,8.28284395 8.04853285,8.75146815 L12,12.7029618 L15.9514841,8.75146815 C16.4200843,8.28284395 17.1799247,8.28284395 17.6485249,8.75146815 C18.117125,9.22010434 18.117125,9.97992066 17.6485249,10.4485209 L12.8485229,15.2485229 C12.3799227,15.717123 11.6200823,15.717123 11.1514821,15.2485229 L6.35146815,10.4485209 C5.88284395,9.97992066 5.88284395,9.22010434 6.35146815,8.75146815 Z"></path>
+                  </svg>
+                </div>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="showcase-code">
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          <code>&lt;div class="sap-crm-filter-bar"&gt;
+  &lt;div class="sap-crm-filter-bar__filters"&gt;
+    &lt;button class="sap-crm-btn sap-crm-btn--neutrallight sap-crm-btn--md"&gt;
+      &lt;span class="sap-crm-btn--dropdown__text"&gt;
+        Status
+        &lt;span class="sap-crm-filter-count"&gt;(2)&lt;/span&gt;
+      &lt;/span&gt;
+      &lt;div class="sap-crm-icon sap-crm-icon--md sap-crm-btn__icon sap-crm-btn__icon--right"&gt;
+        &lt;svg viewBox="0 0 24 24"&gt;
+          &lt;path fill="currentColor" d="...dropdown-arrow-path..."/&gt;
+        &lt;/svg&gt;
+      &lt;/div&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- Filter count badge shows number of active selections --&gt;</code>
+        </div>
+      </div>
+      
+      <div class="showcase-example">
+        <div class="showcase-example-title">Filter Pills (Active Filters)</div>
+        <div class="showcase-demo">
+          <div class="filter-pills-container">
+            <span class="filter-pills-label">Active Filters:</span>
+            
+            <span class="sap-crm-filter-pill">
+              <span class="sap-crm-filter-pill__label">Status: Active</span>
+              <button class="sap-crm-filter-pill__remove" aria-label="Remove filter">✕</button>
+            </span>
+            
+            <span class="sap-crm-filter-pill">
+              <span class="sap-crm-filter-pill__label">Country: USA</span>
+              <button class="sap-crm-filter-pill__remove" aria-label="Remove filter">✕</button>
+            </span>
+            
+            <span class="sap-crm-filter-pill">
+              <span class="sap-crm-filter-pill__label">Industry: Technology</span>
+              <button class="sap-crm-filter-pill__remove" aria-label="Remove filter">✕</button>
+            </span>
+            
+            <button class="sap-crm-btn sap-crm-btn--neutrallight sap-crm-btn--md clear-all-filters-btn">
+              CLEAR ALL
+            </button>
+          </div>
+        </div>
+        <div class="showcase-code">
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          <code>&lt;div class="filter-pills-container"&gt;
+  &lt;span class="filter-pills-label"&gt;Active Filters:&lt;/span&gt;
+  
+  &lt;span class="sap-crm-filter-pill"&gt;
+    &lt;span class="sap-crm-filter-pill__label"&gt;Status: Active&lt;/span&gt;
+    &lt;button class="sap-crm-filter-pill__remove" aria-label="Remove"&gt;✕&lt;/button&gt;
+  &lt;/span&gt;
+  
+  &lt;span class="sap-crm-filter-pill"&gt;
+    &lt;span class="sap-crm-filter-pill__label"&gt;Country: USA&lt;/span&gt;
+    &lt;button class="sap-crm-filter-pill__remove" aria-label="Remove"&gt;✕&lt;/button&gt;
+  &lt;/span&gt;
+  
+  &lt;button class="sap-crm-btn sap-crm-btn--neutrallight sap-crm-btn--md clear-all-filters-btn"&gt;
+    CLEAR ALL
+  &lt;/button&gt;
+&lt;/div&gt;
+
+&lt;!-- Pills use SAP blue background with white text --&gt;
+&lt;!-- X button removes individual filter --&gt;
+&lt;!-- Clear All button removes all active filters --&gt;</code>
+        </div>
+      </div>
+      
+      <div class="showcase-example">
+        <div class="showcase-example-title">Complete Filter Dropdown with Menu</div>
+        <div class="showcase-demo">
+          <div style="position: relative; display: inline-block;">
+            <button class="sap-crm-btn sap-crm-btn--neutrallight sap-crm-btn--md" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'">
+              <span class="sap-crm-btn--dropdown__text">
+                Priority
+                <span class="sap-crm-filter-count">(1)</span>
+              </span>
+              <div class="sap-crm-icon sap-crm-icon--md sap-crm-btn__icon sap-crm-btn__icon--right">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path fill="currentColor" d="M6.35146815,8.75146815 C6.82010434,8.28284395 7.57989666,8.28284395 8.04853285,8.75146815 L12,12.7029618 L15.9514841,8.75146815 C16.4200843,8.28284395 17.1799247,8.28284395 17.6485249,8.75146815 C18.117125,9.22010434 18.117125,9.97992066 17.6485249,10.4485209 L12.8485229,15.2485229 C12.3799227,15.717123 11.6200823,15.717123 11.1514821,15.2485229 L6.35146815,10.4485209 C5.88284395,9.97992066 5.88284395,9.22010434 6.35146815,8.75146815 Z"></path>
+                </svg>
+              </div>
+            </button>
+            
+            <div class="sap-crm-filter-dropdown__menu" style="display: none;">
+              <div class="sap-crm-filter-dropdown__options">
+                <label class="sap-crm-filter-dropdown__option">
+                  <input type="checkbox" checked>
+                  <span>High</span>
+                </label>
+                <label class="sap-crm-filter-dropdown__option">
+                  <input type="checkbox">
+                  <span>Medium</span>
+                </label>
+                <label class="sap-crm-filter-dropdown__option">
+                  <input type="checkbox">
+                  <span>Low</span>
+                </label>
+              </div>
+              <div class="sap-crm-filter-dropdown__actions">
+                <button class="sap-crm-btn sap-crm-btn--neutrallight sap-crm-btn--xsm">Select All</button>
+                <button class="sap-crm-btn sap-crm-btn--neutrallight sap-crm-btn--xsm">Clear</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="showcase-code">
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          <code>&lt;div class="sap-crm-filter-dropdown"&gt;
+  &lt;button class="sap-crm-btn sap-crm-btn--neutrallight sap-crm-btn--md"&gt;
+    &lt;span class="sap-crm-btn--dropdown__text"&gt;
+      Priority
+      &lt;span class="sap-crm-filter-count"&gt;(1)&lt;/span&gt;
+    &lt;/span&gt;
+    &lt;!-- dropdown icon --&gt;
+  &lt;/button&gt;
+  
+  &lt;div class="sap-crm-filter-dropdown__menu"&gt;
+    &lt;div class="sap-crm-filter-dropdown__options"&gt;
+      &lt;label class="sap-crm-filter-dropdown__option"&gt;
+        &lt;input type="checkbox" checked&gt;
+        &lt;span&gt;High&lt;/span&gt;
+      &lt;/label&gt;
+      &lt;label class="sap-crm-filter-dropdown__option"&gt;
+        &lt;input type="checkbox"&gt;
+        &lt;span&gt;Medium&lt;/span&gt;
+      &lt;/label&gt;
+      &lt;label class="sap-crm-filter-dropdown__option"&gt;
+        &lt;input type="checkbox"&gt;
+        &lt;span&gt;Low&lt;/span&gt;
+      &lt;/label&gt;
+    &lt;/div&gt;
+    &lt;div class="sap-crm-filter-dropdown__actions"&gt;
+      &lt;button class="sap-crm-btn sap-crm-btn--neutrallight sap-crm-btn--xsm"&gt;Select All&lt;/button&gt;
+      &lt;button class="sap-crm-btn sap-crm-btn--neutrallight sap-crm-btn--xsm"&gt;Clear&lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- Menu is positioned absolute and toggles visibility --&gt;
+&lt;!-- Options section is scrollable for long lists --&gt;</code>
+        </div>
+      </div>
+    </section>
+    
+    <!-- ICONS -->
+    <section id="icons" class="showcase-section">
+      <h2>Icons</h2>
+      <p style="margin-bottom: 2rem;">All icons from <code>SapIcon.vue</code> component. Icons are displayed in SAP blue (<code>var(--color-primary-5)</code>) as used on buttons.</p>
+      
+      <div class="showcase-example">
+        <div class="showcase-example-title">All Available Icons</div>
+        <div class="showcase-demo">
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1.5rem; color: var(--color-primary-5);">
+            
+            <!-- Search Icon -->
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+              <svg class="sap-crm-icon sap-crm-icon--md" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path fill="currentColor" d="M10.8889012,2 C15.7981303,2 19.7778025,5.97969442 19.7778025,10.8889012 C19.7778025,12.9430885 19.0810143,14.8345226 17.9108962,16.3397453 L21.6745829,20.1032474 C22.1084724,20.5371369 22.1084724,21.2406934 21.6745829,21.6745829 C21.2406934,22.1084724 20.5371369,22.1084724 20.1032474,21.6745829 L16.3397453,17.9108962 C14.8345226,19.0810143 12.9430885,19.7778025 10.8889012,19.7778025 C5.97969442,19.7778025 2,15.7981303 2,10.8889012 C2,5.97969442 5.97969442,2 10.8889012,2 Z M10.8889012,4.22222531 C7.20699612,4.22222531 4.22222531,7.20699612 4.22222531,10.8889012 C4.22222531,14.5707952 7.20699612,17.5555772 10.8889012,17.5555772 C14.5707952,17.5555772 17.5555772,14.5707952 17.5555772,10.8889012 C17.5555772,7.20699612 14.5707952,4.22222531 10.8889012,4.22222531 Z"/>
+              </svg>
+              <span style="color: var(--color-neutral-5);">search</span>
+            </div>
+            
+            <!-- Plus Icon -->
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+              <svg class="sap-crm-icon sap-crm-icon--md" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path fill="currentColor" d="M12,4 C12.5523,4 13,4.51168 13,5.14285714 L13,11 L18.8571429,11 C19.4883429,11 20,11.4477 20,12 C20,12.5523 19.4883429,13 18.8571429,13 L13,13 L13,18.8571429 C13,19.4883429 12.5523,20 12,20 C11.4477,20 11,19.4883429 11,18.8571429 L11,13 L5.14285714,13 C4.51168,13 4,12.5523 4,12 C4,11.4477 4.51168,11 5.14285714,11 L11,11 L11,5.14285714 C11,4.51168 11.4477,4 12,4 Z"/>
+              </svg>
+              <span style="color: var(--color-neutral-5);">plus</span>
+            </div>
+            
+            <!-- Close Icon -->
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+              <svg class="sap-crm-icon sap-crm-icon--md" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path fill="currentColor" d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+              </svg>
+              <span style="color: var(--color-neutral-5);">close</span>
+            </div>
+            
+            <!-- Trash Icon -->
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+              <svg class="sap-crm-icon sap-crm-icon--md" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path fill="currentColor" d="M14.0046,2 C15.6615,2 17.0046,3.34315 17.0046,5 L17.004,6 L20,6 C20.5523,6 21,6.44772 21,7 C21,7.55228 20.5523,8 20,8 L19,8 L19,19 C19,20.6569 17.6569,22 16,22 L8,22 C6.34315,22 5,20.6569 5,19 L5,8 L4,8 C3.44772,8 3,7.55228 3,7 C3,6.44772 3.44772,6 4,6 L6.999,6 L7,5 C7,3.34315 8.34315,2 10,2 L14.0046,2 Z M17,8 L7,8 L7,19 C7,19.5523 7.44772,20 8,20 L16,20 C16.5523,20 17,19.5523 17,19 L17,8 Z M10,10 C10.5523,10 11,10.4477 11,11 L11,17 C11,17.5523 10.5523,18 10,18 C9.44772,18 9,17.5523 9,17 L9,11 C9,10.4477 9.44772,10 10,10 Z M14,10 C14.5523,10 15,10.4477 15,11 L15,17 C15,17.5523 14.5523,18 14,18 C13.4477,18 13,17.5523 13,17 L13,11 C13,10.4477 13.4477,10 14,10 Z M14.0046,4 L10,4 C9.44772,4 9,4.44772 9,5 L8.999,6 L15.004,6 L15.0046,5 C15.0046,4.44772 14.5569,4 14.0046,4 Z"/>
+              </svg>
+              <span style="color: var(--color-neutral-5);">trash</span>
+            </div>
+            
+            <!-- Analytics Icon -->
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+              <svg class="sap-crm-icon sap-crm-icon--md" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path fill="currentColor" d="M12 2a1 1 0 011 1v18a1 1 0 11-2 0V3a1 1 0 011-1z M20.94 8.649a1 1 0 01-.585 1.287l-8.004 3a1 1 0 01-.702-1.872l8.004-3a1 1 0 011.287.585z M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12zm10-8a8 8 0 100 16 8 8 0 000-16z"/>
+              </svg>
+              <span style="color: var(--color-neutral-5);">analytics</span>
+            </div>
+            
+            <!-- Unsorted Icon -->
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+              <svg class="sap-crm-icon sap-crm-icon--md" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path fill="currentColor" d="M9.037 9.517 12 5.9l2.963 3.617H9.037Zm-2.117.267c-.395.483-.058 1.216.56 1.216h9.04c.618 0 .955-.733.56-1.216l-4.52-5.517a.721.721 0 0 0-1.12 0L6.92 9.783ZM12 18.1l2.963-3.617H9.037L12 18.1Zm-5.08-3.884C6.525 13.733 6.862 13 7.48 13h9.04c.618 0 .955.733.56 1.216l-4.52 5.517a.721.721 0 0 1-1.12 0l-4.52-5.517Z"/>
+              </svg>
+              <span style="color: var(--color-neutral-5);">unsorted</span>
+            </div>
+            
+            <!-- Ascending Icon -->
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+              <svg class="sap-crm-icon sap-crm-icon--md" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path fill="currentColor" d="M6.92 9.784c-.395.483-.058 1.216.56 1.216h9.04c.618 0 .955-.733.56-1.216l-4.52-5.517a.721.721 0 0 0-1.12 0L6.92 9.783ZM12 18.1l2.963-3.617H9.037L12 18.1Zm-5.08-3.884C6.525 13.733 6.862 13 7.48 13h9.04c.618 0 .955.733.56 1.216l-4.52 5.517a.721.721 0 0 1-1.12 0l-4.52-5.517Z"/>
+              </svg>
+              <span style="color: var(--color-neutral-5);">ascending</span>
+            </div>
+            
+            <!-- Descending Icon -->
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+              <svg class="sap-crm-icon sap-crm-icon--md" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path fill="currentColor" d="M9.037 9.517 12 5.9l2.963 3.617H9.037Zm-2.117.267c-.395.483-.058 1.216.56 1.216h9.04c.618 0 .955-.733.56-1.216l-4.52-5.517a.721.721 0 0 0-1.12 0L6.92 9.783Zm0 4.432C6.525 13.733 6.862 13 7.48 13h9.04c.618 0 .955.733.56 1.216l-4.52 5.517a.721.721 0 0 1-1.12 0l-4.52-5.517Z"/>
+              </svg>
+              <span style="color: var(--color-neutral-5);">descending</span>
+            </div>
+            
+            <!-- Edit Icon -->
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+              <svg class="sap-crm-icon sap-crm-icon--md" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path fill="currentColor" d="M16.2929,3.29289 C16.6834,2.90237 17.3166,2.90237 17.7071,3.29289 L17.7071,3.29289 L20.7071,6.29289 C21.0976,6.68342 21.0976,7.31658 20.7071,7.70711 L20.7071,7.70711 L17.7068,10.7074 L7.70711,20.7071 C7.51957,20.8946 7.26522,21 7,21 L7,21 L4,21 C3.44772,21 3,20.5523 3,20 L3,20 L3,17 C3,16.7348 3.10536,16.4804 3.29289,16.2929 L3.29289,16.2929 L13.293,6.29279 Z M14,8.41421 L5.41421,17 L7,18.5858 L15.5858,10 L14,8.41421 Z M17,5.41421 L15.4142,7 L17,8.58579 L18.5858,7 L17,5.41421 Z"/>
+              </svg>
+              <span style="color: var(--color-neutral-5);">edit</span>
+            </div>
+            
+            <!-- Open Page Icon -->
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+              <svg class="sap-crm-icon sap-crm-icon--md" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path fill="currentColor" d="M10.0037,3 C10.5559,3 11.0037,3.44772 11.0037,4 C11.0037,4.55228 10.5559,5 10.0037,5 L6,5 C5.44772,5 5,5.44772 5,6 L5,18 C5,18.5523 5.44772,19 6,19 L18.0037,19 C18.5559,19 19.0037,18.5523 19.0037,18 L19.0037,14 C19.0037,13.4477 19.4514,13 20.0037,13 C20.5559,13 21.0037,13.4477 21.0037,14 L21.0037,18 C21.0037,19.6569 19.6605,21 18.0037,21 L6,21 C4.34315,21 3,19.6569 3,18 L3,6 C3,4.34315 4.34315,3 6,3 L10.0037,3 Z M20,3 L20.0193547,3.00018615 C20.0426815,3.00063489 20.0659956,3.00189496 20.089251,3.00396636 L20,3 C20.0506217,3 20.1003646,3.00376123 20.1489647,3.01101945 C20.1659506,3.01362793 20.183377,3.01670199 20.2007276,3.02023985 C20.2227508,3.02464003 20.2444415,3.02983391 20.2658449,3.0357213 C20.2814655,3.04009729 20.2968536,3.04472822 20.3121448,3.04973754 C20.3318037,3.05612298 20.3515854,3.06331629 20.3710648,3.07110458 C20.3887978,3.07819556 20.4061005,3.08567811 20.4232234,3.09367233 C20.4438981,3.10337749 20.4643007,3.11379483 20.4842837,3.12487675 C20.4963954,3.13149738 20.5086138,3.1386054 20.5207092,3.14599385 C20.5462817,3.16171991 20.5711374,3.17849139 20.5951659,3.19631489 C20.6026012,3.20175123 20.6098403,3.2072822 20.61702,3.21292535 C20.6798642,3.2622995 20.7368692,3.31923598 20.7864564,3.38228152 L20.7071,3.29289 C20.7424919,3.32828457 20.7746761,3.36567215 20.8036526,3.40469147 C20.8215141,3.42887139 20.8382852,3.45372715 20.8539361,3.47934192 C20.8613767,3.49138565 20.8684844,3.50360439 20.8753116,3.5159368 C20.886209,3.53570816 20.8966261,3.55611069 20.9063487,3.57690291 C20.9143013,3.59390079 20.9217834,3.6112037 20.9287539,3.62866339 C20.936686,3.64842272 20.9438791,3.6682042 20.9504547,3.6882654 C20.9552491,3.70314829 20.9598798,3.71853639 20.9641321,3.73400673 C20.9701673,3.75556509 20.975361,3.77725539 20.9798355,3.79920726 C20.9832739,3.81662457 20.9863478,3.83405084 20.9889579,3.85153301 C20.9920331,3.87147629 20.9944668,3.89211478 20.9962625,3.91293567 C20.9978187,3.93173446 20.9988803,3.94973359 20.999458,3.96774536 C20.9998183,3.9777894 21,3.98887348 21,4 L21,9 C21,9.55228 20.5523,10 20,10 C19.4477,10 19,9.55228 19,9 L19,6.414 L9.70711,15.7071 C9.31658,16.0976 8.68342,16.0976 8.29289,15.7071 C7.90237,15.3166 7.90237,14.6834 8.29289,14.2929 L17.584,5 L15,5 C14.4477,5 14,4.55228 14,4 C14,3.44772 14.4477,3 15,3 L20,3 Z"/>
+              </svg>
+              <span style="color: var(--color-neutral-5);">open-page</span>
+            </div>
+            
+            <!-- Meatballs Icon -->
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+              <svg class="sap-crm-icon sap-crm-icon--md" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path fill="currentColor" d="M5,10 C6.10457,10 7,10.8954 7,12 C7,13.1046 6.10457,14 5,14 C3.89543,14 3,13.1046 3,12 C3,10.8954 3.89543,10 5,10 Z M19,10 C20.1046,10 21,10.8954 21,12 C21,13.1046 20.1046,14 19,14 C17.8954,14 17,13.1046 17,12 C17,10.8954 17.8954,10 19,10 Z M12,10 C13.1046,10 14,10.8954 14,12 C14,13.1046 13.1046,14 12,14 C10.8954,14 10,13.1046 10,12 C10,10.8954 10.8954,10 12,10 Z"/>
+              </svg>
+              <span style="color: var(--color-neutral-5);">meatballs</span>
+            </div>
+            
+          </div>
+        </div>
+        <div class="showcase-code">
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          <code>&lt;!-- Example: Search Icon --&gt;
+&lt;svg class="sap-crm-icon sap-crm-icon--md" viewBox="0 0 24 24"&gt;
+  &lt;path fill="currentColor" d="M10.8889012,2 C15.7981303,2..."/&gt;
+&lt;/svg&gt;
+
+&lt;!-- Icons inherit color from parent, use SAP blue for button icons --&gt;
+&lt;div style="color: var(--color-primary-5);"&gt;
+  &lt;svg class="sap-crm-icon sap-crm-icon--md"&gt;...&lt;/svg&gt;
+&lt;/div&gt;
+
+&lt;!-- Icon sizes:
+  - .sap-crm-icon--sm: 16px (1rem)
+  - .sap-crm-icon--md: 20px (1.25rem)
+  - .sap-crm-icon--lg: 28px (1.75rem)
+--&gt;</code>
+        </div>
+      </div>
+    </section>
+    
+    <!-- PAGINATION -->
+    <section id="pagination" class="showcase-section">
+      <h2>Pagination</h2>
+      <p style="margin-bottom: 2rem;">Navigation controls for paginated data with previous/next arrows and page numbers.</p>
+      
+      <div class="showcase-example">
+        <div class="showcase-example-title">Basic Pagination</div>
+        <div class="showcase-demo">
+          <div class="sap-crm-pagination" style="justify-content: center;">
+            <button class="sap-crm-btn sap-crm-btn--neutrallight sap-crm-btn--md" disabled>‹</button>
+            <button class="sap-crm-btn sap-crm-btn--pagination sap-crm-btn--selected">1</button>
+            <button class="sap-crm-btn sap-crm-btn--pagination">2</button>
+            <button class="sap-crm-btn sap-crm-btn--pagination">3</button>
+            <button class="sap-crm-btn sap-crm-btn--pagination">4</button>
+            <button class="sap-crm-btn sap-crm-btn--pagination">5</button>
+            <button class="sap-crm-btn sap-crm-btn--neutrallight sap-crm-btn--md">›</button>
+          </div>
+        </div>
+        <div class="showcase-code">
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          <code>&lt;div class="sap-crm-pagination"&gt;
+  &lt;button class="sap-crm-btn sap-crm-btn--neutrallight sap-crm-btn--md" disabled&gt;‹&lt;/button&gt;
+  &lt;button class="sap-crm-btn sap-crm-btn--pagination sap-crm-btn--selected"&gt;1&lt;/button&gt;
+  &lt;button class="sap-crm-btn sap-crm-btn--pagination"&gt;2&lt;/button&gt;
+  &lt;button class="sap-crm-btn sap-crm-btn--pagination"&gt;3&lt;/button&gt;
+  &lt;button class="sap-crm-btn sap-crm-btn--neutrallight sap-crm-btn--md"&gt;›&lt;/button&gt;
+&lt;/div&gt;
+
+&lt;!-- 
+  - Previous button disabled when on first page
+  - .sap-crm-btn--selected for current page (blue border)
+  - .sap-crm-btn--pagination for page number buttons
+  - Next button disabled when on last page
+--&gt;</code>
+        </div>
+      </div>
+      
+      <div class="showcase-example">
+        <div class="showcase-example-title">Pagination with Items Per Page</div>
+        <div class="showcase-demo">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+              <span style="font-size: 0.875rem; color: var(--color-neutral-4);">Items per page:</span>
+              <div class="sap-crm-input" style="width: 100px;">
+                <select>
+                  <option value="10">10</option>
+                  <option value="25">25</option>
+                  <option value="50" selected>50</option>
+                  <option value="100">100</option>
+                </select>
+              </div>
+            </div>
+            
+            <div class="sap-crm-pagination">
+              <button class="sap-crm-btn sap-crm-btn--neutrallight sap-crm-btn--md">‹</button>
+              <button class="sap-crm-btn sap-crm-btn--pagination">1</button>
+              <button class="sap-crm-btn sap-crm-btn--pagination sap-crm-btn--selected">2</button>
+              <button class="sap-crm-btn sap-crm-btn--pagination">3</button>
+              <button class="sap-crm-btn sap-crm-btn--neutrallight sap-crm-btn--md">›</button>
+            </div>
+            
+            <span style="font-size: 0.875rem; color: var(--color-neutral-4);">51-100 of 150</span>
+          </div>
+        </div>
+        <div class="showcase-code">
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          <code>&lt;div style="display: flex; justify-content: space-between; align-items: center;"&gt;
+  &lt;!-- Items per page selector --&gt;
+  &lt;div style="display: flex; align-items: center; gap: 0.75rem;"&gt;
+    &lt;span&gt;Items per page:&lt;/span&gt;
+    &lt;div class="sap-crm-input"&gt;
+      &lt;select&gt;
+        &lt;option value="10"&gt;10&lt;/option&gt;
+        &lt;option value="25"&gt;25&lt;/option&gt;
+        &lt;option value="50" selected&gt;50&lt;/option&gt;
+        &lt;option value="100"&gt;100&lt;/option&gt;
+      &lt;/select&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  
+  &lt;!-- Pagination controls --&gt;
+  &lt;div class="sap-crm-pagination"&gt;
+    &lt;button class="sap-crm-btn sap-crm-btn--neutrallight sap-crm-btn--md"&gt;‹&lt;/button&gt;
+    &lt;button class="sap-crm-btn sap-crm-btn--pagination sap-crm-btn--selected"&gt;2&lt;/button&gt;
+    &lt;button class="sap-crm-btn sap-crm-btn--neutrallight sap-crm-btn--md"&gt;›&lt;/button&gt;
+  &lt;/div&gt;
+  
+  &lt;!-- Range indicator --&gt;
+  &lt;span&gt;51-100 of 150&lt;/span&gt;
+&lt;/div&gt;</code>
+        </div>
+      </div>
+    </section>
+    
+    <!-- MODALS -->
+    <section id="modals" class="showcase-section">
+      <h2>Modal Dialogs</h2>
+      <p style="margin-bottom: 2rem;">Overlay dialogs for forms, confirmations, and detailed views.</p>
+      
+      <div class="showcase-example">
+        <div class="showcase-example-title">Modal Structure</div>
+        <div class="showcase-demo">
+          <button class="sap-crm-btn sap-crm-btn--primary sap-crm-btn--md" onclick="document.getElementById('demoModal').classList.add('active')">
+            Open Modal
+          </button>
+          
+          <div class="modal-backdrop" id="demoModal">
+            <div class="modal">
+              <div class="modal-header">
+                <h2>Modal Title</h2>
+                <button class="sap-crm-btn sap-crm-btn--neutrallight sap-crm-btn--sm" onclick="document.getElementById('demoModal').classList.remove('active')">✕</button>
+              </div>
+              <div class="modal-body">
+                <p style="margin-bottom: 1rem;">This is the modal content area. You can place forms, text, tables, or any other content here.</p>
+                
+                <div class="form-row">
+                  <label for="demoInput">Sample Input</label>
+                  <div class="sap-crm-input">
+                    <input type="text" id="demoInput" placeholder="Enter text...">
+                  </div>
+                </div>
+                
+                <div class="form-row">
+                  <label for="demoSelect">Sample Dropdown</label>
+                  <div class="sap-crm-input">
+                    <select id="demoSelect">
+                      <option value="">Select...</option>
+                      <option value="1">Option 1</option>
+                      <option value="2">Option 2</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button class="sap-crm-btn sap-crm-btn--secondary sap-crm-btn--md" onclick="document.getElementById('demoModal').classList.remove('active')">Cancel</button>
+                <button class="sap-crm-btn sap-crm-btn--primary sap-crm-btn--md" onclick="document.getElementById('demoModal').classList.remove('active')">Save</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="showcase-code">
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          <code>&lt;div class="modal-backdrop" id="modalId"&gt;
+  &lt;div class="modal"&gt;
+    &lt;div class="modal-header"&gt;
+      &lt;h2&gt;Modal Title&lt;/h2&gt;
+      &lt;button class="sap-crm-btn sap-crm-btn--neutrallight sap-crm-btn--sm"&gt;✕&lt;/button&gt;
+    &lt;/div&gt;
+    
+    &lt;div class="modal-body"&gt;
+      &lt;!-- Modal content goes here --&gt;
+      &lt;form&gt;
+        &lt;div class="form-row"&gt;
+          &lt;label for="input1"&gt;Label&lt;/label&gt;
+          &lt;div class="sap-crm-input"&gt;
+            &lt;input type="text" id="input1"&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/form&gt;
+    &lt;/div&gt;
+    
+    &lt;div class="modal-footer"&gt;
+      &lt;button class="sap-crm-btn sap-crm-btn--secondary sap-crm-btn--md"&gt;Cancel&lt;/button&gt;
+      &lt;button class="sap-crm-btn sap-crm-btn--primary sap-crm-btn--md"&gt;Save&lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- Show modal by adding 'active' class to modal-backdrop --&gt;
+&lt;!-- Hide modal by removing 'active' class --&gt;</code>
+        </div>
+      </div>
+      
+      <div class="showcase-example">
+        <div class="showcase-example-title">Form Layout in Modal</div>
+        <div class="showcase-demo">
+          <div style="background: var(--color-background-faded); padding: 1.5rem; border-radius: 0.5rem;">
+            <h4 style="margin: 0 0 1rem 0;">Form Layout Examples</h4>
+            
+            <div class="form-row">
+              <label for="exampleText">Text Input *</label>
+              <div class="sap-crm-input">
+                <input type="text" id="exampleText" placeholder="Required field" required>
+              </div>
+            </div>
+            
+            <div class="form-row">
+              <label>Priority *</label>
+              <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
+                <button type="button" class="sap-crm-btn sap-crm-btn--toggle sap-crm-btn--toggle--red sap-crm-btn--sm">High</button>
+                <button type="button" class="sap-crm-btn sap-crm-btn--toggle sap-crm-btn--toggle--yellow sap-crm-btn--sm" style="opacity: 1;">Medium</button>
+                <button type="button" class="sap-crm-btn sap-crm-btn--toggle sap-crm-btn--toggle--blue sap-crm-btn--sm">Low</button>
+              </div>
+            </div>
+            
+            <div class="form-row-inline">
+              <label for="exampleSwitch">Active Status</label>
+              <div class="sap-crm-icontrol sap-crm-icontrol__switch">
+                <input type="checkbox" id="exampleSwitch" checked>
+                <div class="sap-crm-icontrol__wrap sap-crm-icontrol__wrap--switch">
+                  <div class="sap-crm-icontrol__icon"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="showcase-code">
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          <code>&lt;!-- Standard form row (label above input) --&gt;
+&lt;div class="form-row"&gt;
+  &lt;label for="fieldId"&gt;Label *&lt;/label&gt;
+  &lt;div class="sap-crm-input"&gt;
+    &lt;input type="text" id="fieldId" required&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- Toggle buttons row --&gt;
+&lt;div class="form-row"&gt;
+  &lt;label&gt;Priority *&lt;/label&gt;
+  &lt;div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;"&gt;
+    &lt;button class="sap-crm-btn sap-crm-btn--toggle sap-crm-btn--toggle--red sap-crm-btn--sm"&gt;High&lt;/button&gt;
+    &lt;button class="sap-crm-btn sap-crm-btn--toggle sap-crm-btn--toggle--yellow sap-crm-btn--sm"&gt;Medium&lt;/button&gt;
+    &lt;button class="sap-crm-btn sap-crm-btn--toggle sap-crm-btn--toggle--blue sap-crm-btn--sm"&gt;Low&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- Inline form row (label beside input) --&gt;
+&lt;div class="form-row-inline"&gt;
+  &lt;label for="switch"&gt;Active Status&lt;/label&gt;
+  &lt;div class="sap-crm-icontrol sap-crm-icontrol__switch"&gt;
+    &lt;input type="checkbox" id="switch" checked&gt;
+    &lt;div class="sap-crm-icontrol__wrap sap-crm-icontrol__wrap--switch"&gt;
+      &lt;div class="sap-crm-icontrol__icon"&gt;&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code>
+        </div>
+      </div>
+    </section>
+    
+    <!-- SUMMARY -->
+    <section class="showcase-section">
+      <h2>Using These Styles in Your Project</h2>
+      
+      <div class="note">
+        <h3 style="margin-top: 0;">Implementation Steps</h3>
+        <ol style="margin: 0.5rem 0 0 1.5rem; line-height: 1.8;">
+          <li><strong>Download the CSS files:</strong> Get <code>sap-crm-colors.css</code>, <code>sap-crm-global.css</code>, and <code>sap-crm-components.css</code> from this project</li>
+          <li><strong>Import in order:</strong> Always import colors first, then global, then components</li>
+          <li><strong>Use the HTML patterns:</strong> Copy the HTML structure examples from this showcase</li>
+          <li><strong>Reference CSS variables:</strong> Use <code>var(--color-name)</code> for custom styling</li>
+          <li><strong>Test accessibility:</strong> Ensure keyboard navigation and screen reader support</li>
+        </ol>
+      </div>
+      
+      <div style="margin-top: 2rem; padding: 1.5rem; background: var(--color-background-faded); border-radius: 0.5rem; border-left: 4px solid var(--color-primary-4);">
+        <h3 style="margin-top: 0; color: var(--color-primary-6);">Framework Agnostic</h3>
+        <p style="margin-bottom: 0;">These CSS classes work with any framework: Vue.js, React, Angular, Svelte, or plain HTML/JavaScript. Simply apply the class names to your HTML elements following the patterns shown in this showcase.</p>
+      </div>
+      
+      <div style="margin-top: 2rem; text-align: center; padding: 2rem; background: var(--color-primary-1); border-radius: 0.5rem;">
+        <h3 style="margin: 0 0 1rem 0; color: var(--color-primary-6);">Ready to Build?</h3>
+        <p style="margin: 0 0 1.5rem 0; color: var(--color-neutral-6);">Start using these components in your SAP Sales and Service Cloud V2 projects today!</p>
+        <a href="/" class="sap-crm-btn sap-crm-btn--primary sap-crm-btn--lg" style="text-decoration: none;">
+          Back to Main Application
+        </a>
+      </div>
+    </section>
+
+  </div>
+
+  <script>
+    // Copy code functionality
+    function copyCode(button) {
+      const codeBlock = button.nextElementSibling;
+      const text = codeBlock.textContent;
+      
+      navigator.clipboard.writeText(text).then(() => {
+        button.textContent = 'Copied!';
+        button.classList.add('copied');
+        setTimeout(() => {
+          button.textContent = 'Copy';
+          button.classList.remove('copied');
+        }, 2000);
+      });
+    }
+    
+    // Smooth scroll for navigation links
+    document.querySelectorAll('.showcase-nav-links a').forEach(link => {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href');
+        const targetElement = document.querySelector(targetId);
+        if (targetElement) {
+          targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+  </script>
+</body>
+</html>
